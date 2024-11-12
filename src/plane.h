@@ -1,26 +1,24 @@
 #pragma once
-#include "../wolf/wolf.h"
-#include "../samplefw/Sample.h"
 #include <vector>
-#include "../samplefw/OrbitCamera.h"
+#include "../wolf/wolf.h"
+
 
 struct Vertex
 {
 	GLfloat x,y,z;
-	//GLubyte r,g,b,a;
+
 };
 
-class Plane: public Sample {
+class Plane{
 public:
     // Constructor that takes the number of subdivisions for the plane
-    Plane(wolf::App* pApp, int subdivisions) : Sample(pApp,"Plane"), subdivisions(subdivisions) {}
+    Plane(int subdivisions) : subdivisions(subdivisions) {}
 
     // Destructor
     ~Plane();
 
-    void init() override;
-    void update(float dt) override;
-    void render(int height, int width) override;
+    void init() ;
+    void update(float dt) ;
     void render(glm::mat4& view, glm::mat4& projection);
     void setShader(wolf::Program*);
 

@@ -14,9 +14,6 @@ Vertex gs_squareVertices[] = {
     {-1.0f, 1.0f, 0.0f}     // Top-left
 };
 
-
-
-
 // Destructor
 Plane::~Plane() {
     printf("Destroying The Plane\n");
@@ -29,26 +26,19 @@ void Plane::setShader(wolf::Program* m_program){
 }
 
 void Plane::init() {
-    // Only initialize if it hasn't been done already
-    if (!m_pProgram) {
-        // Set pixel storage mode
-        glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
-        //Generate vertices Based on subdivisions
-        generateVertices();
+    //Generate vertices Based on subdivisions
+    generateVertices();
 
-        // Load and compile shader program
-        m_pProgram = wolf::ProgramManager::CreateProgram("data/planeWater.vsh", "data/planeWater.fsh");
+    m_pVB = wolf::BufferManager::CreateVertexBuffer(vertices.data(), vertices.size() * sizeof(Vertex));
 
-        m_pVB = wolf::BufferManager::CreateVertexBuffer(vertices.data(), vertices.size() * sizeof(Vertex));
-
-        // Set up the vertex declaration
-        m_pDecl = new wolf::VertexDeclaration();
-        m_pDecl->Begin();
-        m_pDecl->AppendAttribute(wolf::AT_Position, 3, wolf::CT_Float);
-        m_pDecl->SetVertexBuffer(m_pVB);
-        m_pDecl->End();
-    }
+    // Set up the vertex declaration
+    m_pDecl = new wolf::VertexDeclaration();
+    m_pDecl->Begin();
+    m_pDecl->AppendAttribute(wolf::AT_Position, 3, wolf::CT_Float);
+    m_pDecl->SetVertexBuffer(m_pVB);
+    m_pDecl->End();
 
     m_time = 0.0f;
     printf("Successfully initialized Plane\n");
@@ -63,8 +53,8 @@ void Plane::render(glm::mat4& view, glm::mat4& projection)
 	m_pProgram->Bind();
     
 	// Bind Uniforms
-    m_pProgram->SetUniform("projection", projection);
-    m_pProgram->SetUniform("view", view);
+    //m_pProgram->SetUniform("projection", projection);
+    //m_pProgram->SetUniform("view", view);
     m_pProgram->SetUniform("world", mWorld);
 
     m_pProgram->SetUniform("time", m_time);
@@ -81,9 +71,6 @@ void Plane::render(glm::mat4& view, glm::mat4& projection)
 }
 void Plane::update(float dt){
     m_time += dt;
-}
-void Plane::render(int height, int width){
-    return;
 }
 
 void Plane::generateVertices() {

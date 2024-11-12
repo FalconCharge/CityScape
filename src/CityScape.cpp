@@ -1,7 +1,6 @@
 #include "CityScape.h"
 
 CityScape::CityScape() : wolf::App("CityScape"){
-    plane1 = new Plane(this, 5);
     camera = new Camera(this);
     camera->init();
 
@@ -20,6 +19,8 @@ void CityScape::update(float dt) {
 void CityScape::init(){
     m_pProgram = wolf::ProgramManager::CreateProgram("data/cube.vsh", "data/cube.fsh");
     m_plane =  wolf::ProgramManager::CreateProgram("data/planeWater.vsh", "data/planeWater.fsh");
+
+    plane1 = new Plane(5);
     plane1->setShader(m_plane);
 }
 
@@ -32,7 +33,7 @@ void CityScape::render() {
     glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    /*
+    
     // Bind the shader program
     m_pProgram->Bind();
 
@@ -45,7 +46,6 @@ void CityScape::render() {
     m_plane->SetUniform("view", view);
     m_plane->SetUniform("projection", proj);
 
-    plane1->render(view, proj);*/
     plane1->render(view, proj);
 
 }
