@@ -22,7 +22,7 @@ void CityScape::update(float dt) {
 }
 void CityScape::init(){
     //Get the shader ready
-    m_plane = wolf::ProgramManager::CreateProgram("data/planeWater.vsh", "data/planeWater.fsh");
+    m_plane = wolf::ProgramManager::CreateProgram("data/planeWater.vsh", "data/planeWater.fsh"); //Shader for the shader Nov.12
 
     plane1 = new Plane(5);
     plane1->init(m_plane);

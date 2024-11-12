@@ -1,12 +1,13 @@
 #pragma once
 #include <vector>
 #include "../wolf/wolf.h"
+#include "../wolf/stb_image.h"
 #include "camera.h"
-
 
 struct Vertex
 {
 	GLfloat x,y,z;
+    GLfloat u,v;
 };
 
 class Plane{
@@ -21,6 +22,7 @@ public:
     void update(float dt) ;
     void render();
     void setCamera(Camera* camera);
+    void loadTexture(char* texturePath);
 
 
 private:
@@ -28,6 +30,7 @@ private:
     wolf::VertexDeclaration* m_pDecl = 0;
     wolf::Program* m_pProgram = 0;
     Camera* m_camera = nullptr; // Pointer to the camera
+    GLuint m_tex = 0;
 
     int subdivisions;
     void generateVertices();
