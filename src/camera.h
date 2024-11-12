@@ -9,7 +9,8 @@ public:
     virtual ~Camera();
 
     void update(float dt);
-
+    void init();
+    
     glm::mat4 getViewMatrix();
     glm::mat4 getProjMatrix(int width, int height);
     glm::vec3 getViewPosition();
