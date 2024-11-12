@@ -1,32 +1,7 @@
-#include <stdio.h>
-#include <iostream>
-#include <glm/glm.hpp>
-#include "../wolf/wolf.h"
-
-class CityScape: public wolf::App
-{
-public:
-    CityScape() : wolf::App("CityScape")
-    {
-    }
-
-    ~CityScape()
-    {
-    }
-
-    void update(float dt) override
-    {
-        
-    }
-
-    void render() override
-    {
-        
-    }
-
-};
+#include "CityScape.h"
 
 int main(int, char**) {
-    CityScape cityScape;
-    cityScape.run();
+    CityScape cityScape;  // Create the CityScape instance
+    cityScape.run();  // Start the main loop
+    return 0;  // Exit cleanly
 }

@@ -6,4 +6,3 @@ void main()
     PixelColor = v_color;
 }
 
-
