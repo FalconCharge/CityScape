@@ -1,31 +1,16 @@
 #include "plane.h"
-#include "../samplefw/Grid2D.h"
 
-
-Vertex gs_squareVertices[] = {
-    // Triangle 1
-    {-1.0f, -1.0f, 0.0f},  // Bottom-left
-    {1.0f, -1.0f, 0.0f},   // Bottom-right
-    {-1.0f, 1.0f, 0.0f},    // Top-left
-
-    // Triangle 2
-    {1.0f, -1.0f, 0.0f},    // Bottom-right
-    {1.0f, 1.0f, 0.0f},     // Top-right
-    {-1.0f, 1.0f, 0.0f}     // Top-left
-};
 
 // Destructor
 Plane::~Plane() {
     printf("Destroying The Plane\n");
     delete m_pDecl;
-    wolf::ProgramManager::DestroyProgram(m_pProgram);
 	wolf::BufferManager::DestroyBuffer(m_pVB);
 }
-void Plane::setShader(wolf::Program* m_program){
-    m_pProgram = m_program;
-}
 
-void Plane::init() {
+//On init takes in the shader program to use
+void Plane::init(wolf::Program* m_program) {
+    m_pProgram = m_program;
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
     //Generate vertices Based on subdivisions
@@ -43,18 +28,26 @@ void Plane::init() {
     m_time = 0.0f;
     printf("Successfully initialized Plane\n");
 }
+void Plane::setCamera(Camera* camera){
+    if(camera){
+        m_camera = camera;
+    }else{
+        printf("Camera doesnt exist\n");
+    }
+}
 
-void Plane::render(glm::mat4& view, glm::mat4& projection)
+void Plane::render()
 { 
-    
     glm::mat4 mWorld(1.0f);
+    glm::mat4 view = m_camera->getViewMatrix();
+    glm::mat4 proj = m_camera->getProjMatrix(800, 800);
 
     // Use shader program.
 	m_pProgram->Bind();
     
-	// Bind Uniforms
-    //m_pProgram->SetUniform("projection", projection);
-    //m_pProgram->SetUniform("view", view);
+	// Bind Uniforms 
+    m_pProgram->SetUniform("projection", proj); 
+    m_pProgram->SetUniform("view", view);
     m_pProgram->SetUniform("world", mWorld);
 
     m_pProgram->SetUniform("time", m_time);
@@ -62,7 +55,6 @@ void Plane::render(glm::mat4& view, glm::mat4& projection)
     m_pProgram->SetUniform("u_color1", glm::vec4(0.0f, 0.5f, 1.0f, 1.0f)); // Lighter blue
     m_pProgram->SetUniform("u_color2", glm::vec4(0.0f, 0.0f, 0.5f, 1.0f)); // Darker blue
 
-    
 	// Set up source data
 	m_pDecl->Bind();
 
@@ -72,7 +64,6 @@ void Plane::render(glm::mat4& view, glm::mat4& projection)
 void Plane::update(float dt){
     m_time += dt;
 }
-
 void Plane::generateVertices() {
     if (subdivisions <= 0) {
         printf("Subdivisions must be greater than 0.\n");
@@ -109,7 +100,6 @@ void Plane::generateVertices() {
         }
     }
 
-    printf("Generate vertices\n");
     printf("Generated %zu vertices\n", vertices.size());
 }
 

@@ -4,9 +4,10 @@
 #include <glm/glm.hpp>
 #include "../wolf/wolf.h"
 #include "camera.h"
-#include "cube.h"
 #include "plane.h"
 
+
+//Generates the city enviroment
 class CityScape : public wolf::App {
 public:
     CityScape();
@@ -18,9 +19,7 @@ public:
 
 private:
     Camera* camera;
-    wolf::Program* m_pProgram = 0;
     wolf::Program* m_plane = 0;
 
-    Cube cube1;
     Plane* plane1;
 };

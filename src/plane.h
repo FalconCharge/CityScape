@@ -1,12 +1,12 @@
 #pragma once
 #include <vector>
 #include "../wolf/wolf.h"
+#include "camera.h"
 
 
 struct Vertex
 {
 	GLfloat x,y,z;
-
 };
 
 class Plane{
@@ -17,16 +17,17 @@ public:
     // Destructor
     ~Plane();
 
-    void init() ;
+    void init(wolf::Program* m_program);
     void update(float dt) ;
-    void render(glm::mat4& view, glm::mat4& projection);
-    void setShader(wolf::Program*);
+    void render();
+    void setCamera(Camera* camera);
 
 
 private:
     wolf::VertexBuffer* m_pVB = 0;
     wolf::VertexDeclaration* m_pDecl = 0;
     wolf::Program* m_pProgram = 0;
+    Camera* m_camera = nullptr; // Pointer to the camera
 
     int subdivisions;
     void generateVertices();
@@ -34,4 +35,3 @@ private:
     float m_time;
 
 };
-
