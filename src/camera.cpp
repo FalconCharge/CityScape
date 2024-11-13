@@ -34,24 +34,27 @@ void Camera::update(float dt) {
 
     m_pApp->setMousePos(screenCenter.x, screenCenter.y);
 
+    glm::vec3 forwardXZ = glm::normalize(glm::vec3(m_front.x, 0.0f, m_front.z));
+    glm::vec3 rightXZ = glm::normalize(glm::cross(forwardXZ, glm::vec3(0.0f, 1.0f, 0.0f)));
+
     const float cameraSpeed = 2.0f * dt; // Adjust speed based on frame time (dt)
     if (m_pApp->isKeyDown(GLFW_KEY_W)) {
-        m_position += m_front * cameraSpeed;
+        m_position += forwardXZ * cameraSpeed;
     }
     if (m_pApp->isKeyDown(GLFW_KEY_S)) {
-        m_position -= m_front * cameraSpeed;
+        m_position -= forwardXZ * cameraSpeed;
     }
     if (m_pApp->isKeyDown(GLFW_KEY_A)) {
-        m_position -= m_right * cameraSpeed;
+        m_position -= rightXZ * cameraSpeed;
     }
     if (m_pApp->isKeyDown(GLFW_KEY_D)) {
-        m_position += m_right * cameraSpeed;
+        m_position += rightXZ * cameraSpeed;
     }
     if (m_pApp->isKeyDown(GLFW_KEY_Q)) {
-        m_position -= m_up * (cameraSpeed);
+        m_position.y -= cameraSpeed;
     }
     if (m_pApp->isKeyDown(GLFW_KEY_E)) {
-        m_position += m_up * (cameraSpeed);
+        m_position.y += cameraSpeed;
     }
 
 }
@@ -65,7 +68,7 @@ void Camera::updateCameraVectors() {
 
     // Also re-calculate the right and up vectors
     m_right = glm::normalize(glm::cross(m_front, glm::vec3(0.0f, 1.0f, 0.0f)));  // Cross product with up vector
-    m_up = glm::normalize(glm::cross(m_right, m_front));  // Recalculate the up vector
+    m_up = glm::normalize(glm::cross(m_right, m_front));  // Up vector
 }
 glm::mat4 Camera::getViewMatrix(){      
     return glm::lookAt(m_position, m_position + m_front, m_up);
