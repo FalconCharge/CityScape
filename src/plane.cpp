@@ -6,7 +6,7 @@ Plane::~Plane() {
     printf("Destroying The Plane\n");
     delete m_pDecl;
 	wolf::BufferManager::DestroyBuffer(m_pVB);
-    glDeleteTextures(1, &m_tex);
+    //glDeleteTextures(1, &m_tex);
 }
 
 //On init takes in the shader program to use
@@ -23,14 +23,14 @@ void Plane::init(wolf::Program* m_program) {
     m_pDecl = new wolf::VertexDeclaration();
     m_pDecl->Begin();
     m_pDecl->AppendAttribute(wolf::AT_Position, 3, wolf::CT_Float);
-    m_pDecl->AppendAttribute(wolf::AT_TexCoord1, 2, wolf::CT_Float);
+    //m_pDecl->AppendAttribute(wolf::AT_TexCoord1, 2, wolf::CT_Float);
     m_pDecl->SetVertexBuffer(m_pVB);
     m_pDecl->End();
 
     m_time = 0.0f;
 
-    loadTexture("data/grasstop.png");
-    wolf::Texture* pTex = wolf::TextureManager::CreateTexture("data/grasstop.png");
+    //loadTexture("data/grasstop.png");
+    //wolf::Texture* pTex = wolf::TextureManager::CreateTexture("data/grasstop.png");
 
     printf("Successfully initialized Plane\n");
 
@@ -51,14 +51,14 @@ void Plane::render()
     // Use shader program.
 	m_pProgram->Bind();
     
-    glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, m_tex);
+    //glActiveTexture(GL_TEXTURE0);
+	//glBindTexture(GL_TEXTURE_2D, m_tex);
 
 	// Bind Uniforms 
     m_pProgram->SetUniform("projection", proj); 
     m_pProgram->SetUniform("view", view);
     m_pProgram->SetUniform("world", mWorld);
-    m_pProgram->SetUniform("tex", 0);
+    //m_pProgram->SetUniform("tex", 0);
 
     m_pProgram->SetUniform("time", m_time);
 
@@ -90,17 +90,19 @@ void Plane::generateVertices() {
             // Calculate the offset for centering the plane
             float xOffset = j * step - (size / 2.0f); // Center the plane on x-axis
             float zOffset = i * step - (size / 2.0f); // Center the plane on z-axis
-            /*
+            
             // Define the four corners of the quad on the x-z plane
             Vertex v0 = { xOffset, 0.0f, zOffset                };                       // Bottom-left
             Vertex v1 = { xOffset + step, 0.0f, zOffset         };              // Bottom-right
             Vertex v2 = { xOffset, 0.0f, zOffset + step         };              // Top-left
-            Vertex v3 = { xOffset + step, 0.0f, zOffset + step  };       // Top-right*/
+            Vertex v3 = { xOffset + step, 0.0f, zOffset + step  };       // Top-right
+            /*
             // Define the four corners of the quad on the x-z plane with texture coordinates
             Vertex v0 = { xOffset,           0.0f, zOffset,           0.0f, 0.0f}; // Bottom-left
             Vertex v1 = { xOffset + step,    0.0f, zOffset,           1.0f, 0.0f}; // Bottom-right
             Vertex v2 = { xOffset,           0.0f, zOffset + step,    0.0f, 1.0f}; // Top-left
             Vertex v3 = { xOffset + step,    0.0f, zOffset + step,    1.0f, 1.0f}; // Top-right
+            */
 
             // First triangle
             vertices.push_back(v0); // Bottom-left
@@ -123,49 +125,6 @@ void Plane::loadTexture(char* texturePath) {
         } else {
             printf("Failed to load texture: %s\n", texturePath);
         }
-
-    /*
-    // Load the texture image
-    int width, height, channels;
-    unsigned char *data = stbi_load(texturePath, &width, &height, &channels, 0);
-    if (data) {
-        // Generate a texture ID
-        glGenTextures(1, &m_tex);
-        printf("tex was %d\n", m_tex);
-        glBindTexture(GL_TEXTURE_2D, m_tex);
-
-        // Determine texture format based on channels
-        int format = -1;
-        switch (channels) {
-            case 1:  format = GL_R; break;
-            case 2:  format = GL_RG; break;
-            case 3:  format = GL_RGB; break;
-            case 4:  format = GL_RGBA; break;
-            default: 
-                printf("Error: unknown image format with %d channels\n", channels);
-                return;
-        }
-
-        // Load the image data into OpenGL texture
-        glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
-
-        // Generate mipmaps for texture scaling
-        glGenerateMipmap(GL_TEXTURE_2D);
-
-        // Free image data after uploading
-        stbi_image_free(data);
-
-        // Set texture parameters (wrapping and filtering)
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
-        printf("Texture loaded successfully!\n");
-    } else {
-        printf("Failed to load texture: %s\n", texturePath);
-    }
-    */
 }
 
 

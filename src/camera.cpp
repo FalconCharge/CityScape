@@ -6,26 +6,16 @@ Camera::~Camera()
 	printf("Destroying Camera\n");
 }
 void Camera::init(){
+    m_pApp->hideCursor();
     printf("Camera init\n");
 }
 
 void Camera::update(float dt) {
-    // Get mouse position using wolf::App's getMousePos()
+    glm::vec2 screenCenter(m_pApp->getScreenSize().x / 2.0f, m_pApp->getScreenSize().y / 2.0f);
     glm::vec2 mousePos = m_pApp->getMousePos();  // Get mouse position (x, y) in window space
 
-    // First-time mouse capture to set the initial mouse position
-    if (m_firstMouse) {
-        m_lastX = mousePos.x;
-        m_lastY = mousePos.y;
-        m_firstMouse = false;
-    }
-
-    // Calculate the difference between the current mouse position and the last position
-    float offsetX = mousePos.x - m_lastX;
-    float offsetY = m_lastY - mousePos.y;  // Reverse the Y axis since Y coordinates increase downwards
-
-    m_lastX = mousePos.x;
-    m_lastY = mousePos.y;
+    float offsetX = (mousePos.x - screenCenter.x);
+    float offsetY = (screenCenter.y - mousePos.y);  // Reverse Y axis
 
     // Sensitivity settings for camera movement
     const float sensitivity = 0.15f;
@@ -36,14 +26,15 @@ void Camera::update(float dt) {
     m_yaw += offsetX;
     m_pitch += offsetY;
 
-    // Constrain the pitch to prevent the camera from flipping
-    if (m_pitch > 89.0f) m_pitch = 89.0f;
-    if (m_pitch < -89.0f) m_pitch = -89.0f;
+    //Limits from player looking to high
+    m_pitch = glm::clamp(m_pitch, -89.0f, 80.0f);
 
     // Update the front vector based on yaw and pitch
     updateCameraVectors();
 
-    const float cameraSpeed = 2.5f * dt; // Adjust speed based on frame time (dt)
+    m_pApp->setMousePos(screenCenter.x, screenCenter.y);
+
+    const float cameraSpeed = 2.0f * dt; // Adjust speed based on frame time (dt)
     if (m_pApp->isKeyDown(GLFW_KEY_W)) {
         m_position += m_front * cameraSpeed;
     }
@@ -56,6 +47,13 @@ void Camera::update(float dt) {
     if (m_pApp->isKeyDown(GLFW_KEY_D)) {
         m_position += m_right * cameraSpeed;
     }
+    if (m_pApp->isKeyDown(GLFW_KEY_Q)) {
+        m_position -= m_up * (cameraSpeed);
+    }
+    if (m_pApp->isKeyDown(GLFW_KEY_E)) {
+        m_position += m_up * (cameraSpeed);
+    }
+
 }
 void Camera::updateCameraVectors() {
     // Calculate the new front vector based on yaw and pitch
@@ -74,15 +72,8 @@ glm::mat4 Camera::getViewMatrix(){
 }
 glm::mat4 Camera::getProjMatrix(int width, int height)
 {
-    
 	return glm::perspective(m_fov, (float)width / (float)height, m_near, m_far);
 }
 glm::vec3 Camera::getViewPosition(){
-    std::cout << "Calling matrix " 
-          << "m_position: (" 
-          << m_position.x << ", " 
-          << m_position.y << ", " 
-          << m_position.z << ")" 
-          << std::endl;
     return m_position;
 }

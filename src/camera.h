@@ -10,15 +10,17 @@ public:
 
     void update(float dt);
     void init();
+    void invertCamera();
     
     glm::mat4 getViewMatrix();
     glm::mat4 getProjMatrix(int width, int height);
     glm::vec3 getViewPosition();
 
 
+
 private:
     // Private variables for camera properties
-    glm::vec3 m_position = glm::vec3(0.0f, 0.0f, 0.0f);  // Camera position
+    glm::vec3 m_position = glm::vec3(0.0f, 10.0f, 0.0f);  // Camera position
     glm::vec3 m_front = glm::vec3(0.0f, 0.0f, -1.0f);     // Front direction vector
     glm::vec3 m_up = glm::vec3(0.0f, 1.0f, 0.0f);         // Up direction vector
     glm::vec3 m_right = glm::vec3(1.0f, 0.0f, 0.0f);       // Right direction vector
@@ -29,11 +31,6 @@ private:
     float m_fov = glm::radians(45.0f);  // Field of view
     float m_near = 0.1f;   // Near clipping plane
     float m_far = 1000.0f; // Far clipping plane
-
-    // Variables to store mouse state for FPS control
-    float m_lastX = 0.0f;
-    float m_lastY = 0.0f;
-    bool m_firstMouse = true;
 
     wolf::App* m_pApp = nullptr;  // Pointer to the application (wolf::App)
     

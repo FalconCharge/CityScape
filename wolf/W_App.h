@@ -21,6 +21,8 @@ namespace wolf
         bool isRMBDown() const;
         bool isMMBDown() const;
         glm::vec2 getMousePos() const;
+        void setMousePos(double x, double y) const; //Added Ben Nov/12
+        void hideCursor() const;                    //Added Ben Nov.12
         glm::vec2 getScreenSize() const;
         glm::vec2 getMouseScroll() const { return m_mouseScroll; }
         GLFWwindow* getWindow() const { return m_pWindow; }

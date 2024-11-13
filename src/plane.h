@@ -7,7 +7,7 @@
 struct Vertex
 {
 	GLfloat x,y,z;
-    GLfloat u,v;
+    //GLfloat u,v;
 };
 
 class Plane{

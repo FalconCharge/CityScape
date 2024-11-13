@@ -190,6 +190,14 @@ glm::vec2 App::getMousePos() const
     glfwGetCursorPos(m_pWindow, &xpos, &ypos);
     return glm::vec2((float)xpos,(float)ypos);
 }
+//Author Ben Harper Nov.12
+void App::setMousePos(double x, double y) const{
+    glfwSetCursorPos(getWindow(), x, y);
+}
+//Author Ben Harper Nov.12
+void App::hideCursor() const{
+    glfwSetInputMode(getWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+}
 
 glm::vec2 App::getScreenSize() const
 {

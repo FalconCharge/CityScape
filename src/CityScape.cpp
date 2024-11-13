@@ -3,6 +3,7 @@
 CityScape::CityScape() : wolf::App("CityScape"){
     //init the camera!
     camera = new Camera(this);
+    camera->init();
 }
 
 CityScape::~CityScape() {
@@ -22,7 +23,7 @@ void CityScape::update(float dt) {
 }
 void CityScape::init(){
     //Get the shader ready
-    m_plane = wolf::ProgramManager::CreateProgram("data/planeWater.vsh", "data/planeWater.fsh"); //Shader for the shader Nov.12
+    m_plane = wolf::ProgramManager::CreateProgram("data/cube.vsh", "data/cube.fsh"); //Shader for the shader Nov.12
 
     plane1 = new Plane(5);
     plane1->init(m_plane);
