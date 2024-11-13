@@ -78,7 +78,6 @@ glm::mat4 Camera::getProjMatrix(int width, int height)
 	return glm::perspective(m_fov, (float)width / (float)height, m_near, m_far);
 }
 glm::vec3 Camera::getViewPosition(){
-    //The pos is changing but I don't see it happening
     std::cout << "Calling matrix " 
           << "m_position: (" 
           << m_position.x << ", " 
