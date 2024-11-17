@@ -12,9 +12,9 @@ public:
     void init();
     void invertCamera();
     
-    glm::mat4 getViewMatrix();
-    glm::mat4 getProjMatrix(int width, int height);
-    glm::vec3 getViewPosition();
+    glm::mat4 getViewMatrix() const;
+    glm::mat4 getProjMatrix(int width, int height) const;
+    glm::vec3 getViewPosition() const;
 
 
 

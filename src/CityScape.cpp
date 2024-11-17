@@ -25,9 +25,12 @@ void CityScape::init(){
     //Get the shader ready
     m_plane = wolf::ProgramManager::CreateProgram("data/cube.vsh", "data/cube.fsh"); //Shader for the shader Nov.12
 
+
     plane1 = new Plane(5);
     plane1->init(m_plane);
     plane1->setCamera(camera);
+
+    grid = new Grid(5, 5, 25);      //Create the layout grid
     
     printf("initilized the city!\n");
 }
@@ -38,6 +41,10 @@ void CityScape::render() {
     glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    //Render a plane
-    plane1->render();
+    
+    
 }
+void CityScape::render() {
+    grid->render(camera->getProjMatrix(this->getScreenSize().x, this->getScreenSize().y), camera->getViewMatrix());
+}
+
