@@ -65,3 +65,8 @@ void Grid::setShader(wolf::Program* shader) {
         building->setShader(shader);  // Set shader for each building
     }
 }
+
+glm::vec3 Grid::getSize() const{
+    // The grid's size is the number of rows/columns times the size of each building
+    return glm::vec3(m_rows * m_buildingSize.x, m_buildingSize.y, m_cols * m_buildingSize.z);
+}

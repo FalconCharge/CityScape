@@ -17,13 +17,17 @@ public:
     void init();
     void update(float dt) override;
     void render() override;
+
+    void gridSetup();
     
 
 private:
     Camera* camera;
-    Grid* grid;
+    Grid* grid1;
     wolf::Program* m_plane = 0;
     wolf::Program* m_building = 0;
+
+    std::vector<Grid*> grids;
 
     Plane* plane1;
 };

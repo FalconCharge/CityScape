@@ -16,6 +16,7 @@ public:
 
     void setCamera(Camera* camera);  // Set camera for the buildings
     void setShader(wolf::Program* shader);  // Set shader for the buildings
+    glm::vec3 getSize() const;
 
 private:
     int m_rows, m_cols;  // Number of rows and columns
