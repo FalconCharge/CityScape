@@ -8,6 +8,7 @@ Building::~Building(){
     printf("Destroying The Building\n");
     delete m_pDecl;
 	wolf::BufferManager::DestroyBuffer(m_pVB);
+    wolf::TextureManager::DestroyTexture(m_texture);
 }
 void Building::setCamera(Camera* camera){
     m_camera = camera;
@@ -30,10 +31,14 @@ void Building::init(){
     m_pDecl = new wolf::VertexDeclaration();
     m_pDecl->Begin();
     m_pDecl->AppendAttribute(wolf::AT_Position, 3, wolf::CT_Float);
+    m_pDecl->AppendAttribute(wolf::AT_TexCoord1, 2, wolf::CT_Float);
     m_pDecl->SetVertexBuffer(m_pVB);
     m_pDecl->End();
 
-    printf("Successfully initialized Building\n");
+    m_texture = wolf::TextureManager::CreateTexture("data/textures/bricksx64.png");
+
+
+    //printf("Successfully initialized Building\n");
 }
 void Building::render()
 { 
@@ -49,8 +54,8 @@ void Building::render()
     m_pProgram->SetUniform("view", view);
     m_pProgram->SetUniform("world", mWorld);
 
-
-    m_pProgram->SetUniform("u_color", m_color);
+    m_texture->Bind(0);
+    m_pProgram->SetUniform("tex", 0);
 
 	// Set up source data
 	m_pDecl->Bind();
@@ -58,10 +63,9 @@ void Building::render()
     // Draw!
 	glDrawArrays(GL_TRIANGLES, 0, vertices.size());
 }
-void Building::generateVertices(){
+void Building::generateVertices() {
     vertices.clear();
 
-    // Assuming you want to generate a cuboid (a 3D box)
     float x = m_position.x;
     float y = m_position.y;
     float z = m_position.z;
@@ -69,64 +73,64 @@ void Building::generateVertices(){
     float height = m_size.y;
     float depth = m_size.z;
 
-    // Helper lambda to add a vertex
-    auto addVertex = [&](float x, float y, float z) {
-        VertexBuilding v = {x, y, z}; 
-        vertices.push_back(v);
+    // Helper lambda to add a vertex with position and texture coordinates
+    auto addVertex = [&](float px, float py, float pz, float u, float v) {
+        VertexBuilding vtx = {px, py, pz, u, v};
+        vertices.push_back(vtx);
     };
 
-    // Vertices for the cuboid (building) using position and size
-    // Front face
-    addVertex(x, y, z); 
-    addVertex(x + width, y, z); 
-    addVertex(x + width, y + height, z); 
+    // Front face (facing positive Z direction) 
+    addVertex(x, y, z, 0.0f, 0.0f);                     // Bottom-left corner
+    addVertex(x + width, y, z, 1.0f, 0.0f);             // Bottom-right corner
+    addVertex(x + width, y + height, z, 1.0f, 1.0f);    // Top-right corner
 
-    addVertex(x, y, z); 
-    addVertex(x + width, y + height, z); 
-    addVertex(x, y + height, z); 
+    addVertex(x, y, z, 0.0f, 0.0f);                     // Bottom-left corner (again, for the second triangle)
+    addVertex(x + width, y + height, z, 1.0f, 1.0f);    // Top-right corner
+    addVertex(x, y + height, z, 0.0f, 1.0f);            // Top-left corner
 
     // Back face
-    addVertex(x, y, z - depth); 
-    addVertex(x + width, y, z - depth); 
-    addVertex(x + width, y + height, z - depth); 
+    addVertex(x, y, z - depth, 1.0f, 0.0f);
+    addVertex(x + width, y, z - depth, 0.0f, 0.0f);
+    addVertex(x + width, y + height, z - depth, 0.0f, 1.0f);
 
-    addVertex(x, y, z - depth); 
-    addVertex(x + width, y + height, z - depth); 
-    addVertex(x, y + height, z - depth); 
+    addVertex(x, y, z - depth, 1.0f, 0.0f);
+    addVertex(x + width, y + height, z - depth, 0.0f, 1.0f);
+    addVertex(x, y + height, z - depth, 1.0f, 1.0f);
 
     // Left face
-    addVertex(x, y, z); 
-    addVertex(x, y, z - depth); 
-    addVertex(x, y + height, z - depth); 
+    addVertex(x, y, z, 0.0f, 0.0f);
+    addVertex(x, y, z - depth, 1.0f, 0.0f);
+    addVertex(x, y + height, z - depth, 1.0f, 1.0f);
 
-    addVertex(x, y, z); 
-    addVertex(x, y + height, z - depth); 
-    addVertex(x, y + height, z); 
+    addVertex(x, y, z, 0.0f, 0.0f);
+    addVertex(x, y + height, z - depth, 1.0f, 1.0f);
+    addVertex(x, y + height, z, 0.0f, 1.0f);
 
     // Right face
-    addVertex(x + width, y, z); 
-    addVertex(x + width, y, z - depth); 
-    addVertex(x + width, y + height, z - depth); 
+    addVertex(x + width, y, z, 1.0f, 0.0f);
+    addVertex(x + width, y, z - depth, 0.0f, 0.0f);
+    addVertex(x + width, y + height, z - depth, 0.0f, 1.0f);
 
-    addVertex(x + width, y, z); 
-    addVertex(x + width, y + height, z - depth); 
-    addVertex(x + width, y + height, z); 
+    addVertex(x + width, y, z, 1.0f, 0.0f);
+    addVertex(x + width, y + height, z - depth, 0.0f, 1.0f);
+    addVertex(x + width, y + height, z, 1.0f, 1.0f);
 
     // Top face
-    addVertex(x, y + height, z); 
-    addVertex(x + width, y + height, z); 
-    addVertex(x + width, y + height, z - depth); 
+    addVertex(x, y + height, z, 0.0f, 0.0f);
+    addVertex(x + width, y + height, z, 1.0f, 0.0f);
+    addVertex(x + width, y + height, z - depth, 1.0f, 1.0f);
 
-    addVertex(x, y + height, z); 
-    addVertex(x + width, y + height, z - depth); 
-    addVertex(x, y + height, z - depth); 
+    addVertex(x, y + height, z, 0.0f, 0.0f);
+    addVertex(x + width, y + height, z - depth, 1.0f, 1.0f);
+    addVertex(x, y + height, z - depth, 0.0f, 1.0f);
 
     // Bottom face
-    addVertex(x, y, z); 
-    addVertex(x + width, y, z); 
-    addVertex(x + width, y, z - depth); 
+    addVertex(x, y, z, 0.0f, 1.0f);
+    addVertex(x + width, y, z, 1.0f, 1.0f);
+    addVertex(x + width, y, z - depth, 1.0f, 0.0f);
 
-    addVertex(x, y, z); 
-    addVertex(x + width, y, z - depth); 
-    addVertex(x, y, z - depth); 
+    addVertex(x, y, z, 0.0f, 1.0f);
+    addVertex(x + width, y, z - depth, 1.0f, 0.0f);
+    addVertex(x, y, z - depth, 0.0f, 0.0f);
+    
 }

@@ -24,6 +24,8 @@ public:
 private:
     Camera* camera;
     Grid* grid1;
+    Building* building1;
+    
     wolf::Program* m_plane = 0;
     wolf::Program* m_building = 0;
 

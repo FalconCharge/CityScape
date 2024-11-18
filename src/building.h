@@ -7,6 +7,7 @@
 struct VertexBuilding
 {
 	GLfloat x,y,z;
+    GLfloat u, v;
 };
 
 class Building {
@@ -27,7 +28,8 @@ private:
     wolf::VertexBuffer* m_pVB = 0;
     wolf::VertexDeclaration* m_pDecl = 0;
     wolf::Program* m_pProgram = 0;
-    Camera* m_camera = nullptr; // Pointer to the camera
+    wolf::Texture* m_texture;           // Texture for the building
+    Camera* m_camera = nullptr;         // Pointer to the camera
 
 
     glm::vec3 m_position;

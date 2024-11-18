@@ -34,6 +34,15 @@ void CityScape::init(){
     plane1->init(m_plane);
     plane1->setCamera(camera);
 
+    
+    //Makeing 1 buildilng to add the texture somehow
+    building1 = new Building(glm::vec3(-3.0f, 1.0f, 1.0f), glm::vec3(1.0f, 1.0f, 1.0f));
+    building1->init();
+    building1->setCamera(camera);
+    building1->setShader(m_building);
+    
+    
+    
     grid1 = new Grid(10, 10, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f));
     grids.push_back(grid1);
 
@@ -50,7 +59,7 @@ void CityScape::init(){
         grid->setCamera(camera);
         grid->setShader(m_building);
     }
-
+    
 
 
     printf("initilized the city!\n");
@@ -63,9 +72,12 @@ void CityScape::render() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     if(plane1) plane1->render();
+    if(building1) building1->render();
+
     for (auto& grid : grids) {
         grid->render();
     }
+   
 }
 
 

@@ -41,7 +41,7 @@ void Grid::init() {
 
             Building* building = new Building(pos, randomBuildingSize);
             building->init();
-            building->setColor(randomColor);
+            //building->setColor(randomColor);
             m_buildings.push_back(building);
         }
     }

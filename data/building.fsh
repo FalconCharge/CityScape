@@ -1,7 +1,10 @@
-uniform vec3 u_color;
+in vec2 v_uv1;
 
-out vec4 PixelColor;  // User-defined output variable
+uniform sampler2D tex;
 
-void main() {
-    PixelColor = vec4(u_color, 1.0);  // Assign color to the output
+out vec4 PixelColor;
+
+void main()
+{
+    PixelColor = texture(tex, v_uv1);
 }
