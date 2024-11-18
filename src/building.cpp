@@ -1,6 +1,8 @@
 #include "building.h"
 
-void Building::render(glm::mat4& view, glm::mat4& proj){
-    //We render the building here
-    return;
+
+Building::~Building(){
+    printf("Destroying The Plane\n");
+    delete m_pDecl;
+	wolf::BufferManager::DestroyBuffer(m_pVB);
 }

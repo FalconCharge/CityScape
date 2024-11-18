@@ -30,8 +30,7 @@ void CityScape::init(){
     plane1->init(m_plane);
     plane1->setCamera(camera);
 
-    grid = new Grid(5, 5, 25);      //Create the layout grid
-    
+
     printf("initilized the city!\n");
 }
 
@@ -41,10 +40,8 @@ void CityScape::render() {
     glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    
+    plane1->render();
     
 }
-void CityScape::render() {
-    grid->render(camera->getProjMatrix(this->getScreenSize().x, this->getScreenSize().y), camera->getViewMatrix());
-}
+
 

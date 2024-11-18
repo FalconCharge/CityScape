@@ -2,7 +2,7 @@
 
 void Grid::generate() {
     buildings.clear();
-    std::srand(std::time(nullptr)); // Seed for randomization
+    //std::srand(std::time(nullptr)); // Seed for randomization
 
     for (int row = 0; row < rows; ++row) {
         for (int col = 0; col < cols; ++col) {
@@ -12,13 +12,8 @@ void Grid::generate() {
                 (std::rand() % 10 + 5) * 1.0f, // Random height
                 (std::rand() % 3 + 1) * 2.0f  // Random depth
             );
-            buildings.emplace_back(position, size, 0); // Add building with default texture
+            //buildings.emplace_back(position, size, 0); // Add building with default texture
         }
-    }
-}
-void Grid::render(glm::mat4& proj, glm::mat4& view) {
-    for (Building& building : buildings) {
-        building.render(proj, view);
     }
 }
 

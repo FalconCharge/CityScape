@@ -4,10 +4,9 @@
 #include "../wolf/stb_image.h"
 #include "camera.h"
 
-struct Vertex
+struct VertexPlane
 {
 	GLfloat x,y,z;
-    //GLfloat u,v;
 };
 
 class Plane{
@@ -19,7 +18,7 @@ public:
     ~Plane();
 
     void init(wolf::Program* m_program);
-    void update(float dt) ;
+    void update(float dt);
     void render();
     void setCamera(Camera* camera);
     void loadTexture(char* texturePath);
@@ -34,7 +33,7 @@ private:
 
     int subdivisions;
     void generateVertices();
-    std::vector<Vertex> vertices;
+    std::vector<VertexPlane> vertices;
     float m_time;
 
 };

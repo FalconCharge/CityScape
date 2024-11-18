@@ -17,7 +17,7 @@ void Plane::init(wolf::Program* m_program) {
     //Generate vertices Based on subdivisions
     generateVertices();
 
-    m_pVB = wolf::BufferManager::CreateVertexBuffer(vertices.data(), vertices.size() * sizeof(Vertex));
+    m_pVB = wolf::BufferManager::CreateVertexBuffer(vertices.data(), vertices.size() * sizeof(VertexPlane));
 
     // Set up the vertex declaration
     m_pDecl = new wolf::VertexDeclaration();
@@ -92,10 +92,10 @@ void Plane::generateVertices() {
             float zOffset = i * step - (size / 2.0f); // Center the plane on z-axis
             
             // Define the four corners of the quad on the x-z plane
-            Vertex v0 = { xOffset, 0.0f, zOffset                };                       // Bottom-left
-            Vertex v1 = { xOffset + step, 0.0f, zOffset         };              // Bottom-right
-            Vertex v2 = { xOffset, 0.0f, zOffset + step         };              // Top-left
-            Vertex v3 = { xOffset + step, 0.0f, zOffset + step  };       // Top-right
+            VertexPlane v0 = { xOffset, 0.0f, zOffset                };                       // Bottom-left
+            VertexPlane v1 = { xOffset + step, 0.0f, zOffset         };              // Bottom-right
+            VertexPlane v2 = { xOffset, 0.0f, zOffset + step         };              // Top-left
+            VertexPlane v3 = { xOffset + step, 0.0f, zOffset + step  };       // Top-right
             /*
             // Define the four corners of the quad on the x-z plane with texture coordinates
             Vertex v0 = { xOffset,           0.0f, zOffset,           0.0f, 0.0f}; // Bottom-left
