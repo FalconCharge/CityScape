@@ -31,6 +31,7 @@ private:
     float m_fov = glm::radians(45.0f);  // Field of view
     float m_near = 0.1f;   // Near clipping plane
     float m_far = 1000.0f; // Far clipping plane
+    bool m_inverted = false;
 
     wolf::App* m_pApp = nullptr;  // Pointer to the application (wolf::App)
     

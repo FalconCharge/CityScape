@@ -17,6 +17,10 @@ void Camera::update(float dt) {
     float offsetX = (mousePos.x - screenCenter.x);
     float offsetY = (screenCenter.y - mousePos.y);  // Reverse Y axis
 
+    if (m_inverted) {
+        offsetY = -offsetY;  // Invert up/down
+    }
+
     // Sensitivity settings for camera movement
     const float sensitivity = 0.15f;
     offsetX *= sensitivity;
@@ -56,6 +60,10 @@ void Camera::update(float dt) {
     if (m_pApp->isKeyDown(GLFW_KEY_E)) {
         m_position.y += cameraSpeed;
     }
+    if (m_pApp->isKeyDown(GLFW_KEY_I)) {  // Press 'I' to toggle inversion
+        this->invertCamera();
+    }
+
 
 }
 void Camera::updateCameraVectors() {
@@ -79,4 +87,7 @@ glm::mat4 Camera::getProjMatrix(int width, int height)
 }
 glm::vec3 Camera::getViewPosition(){
     return m_position;
+}
+void Camera::invertCamera(){
+    m_inverted = true;
 }
