@@ -23,6 +23,7 @@ private:
     Camera* camera;
     Grid* grid;
     wolf::Program* m_plane = 0;
+    wolf::Program* m_building = 0;
 
     Plane* plane1;
 };

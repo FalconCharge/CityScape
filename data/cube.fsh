@@ -1,7 +1,6 @@
-out vec4 PixelColor;
 
-void main()
-{
-    PixelColor = vec4(0.0f, 0.0f, 1.0f, 1.0f);
+out vec4 PixelColor;  // User-defined output variable
+
+void main() {
+    PixelColor = vec4(0.0, 0.0, 1.0, 1.0);  // Assign color to the output
 }
-

@@ -80,7 +80,7 @@ void Plane::generateVertices() {
     }
 
     vertices.clear();
-    float size = 5.0f; // Size of each plane
+    float size = 1000.0f; // Size of each plane
     float step = size / subdivisions; // Calculate the distance between each vertex
 
     // Nested loop to generate subdivisions
@@ -96,13 +96,6 @@ void Plane::generateVertices() {
             VertexPlane v1 = { xOffset + step, 0.0f, zOffset         };              // Bottom-right
             VertexPlane v2 = { xOffset, 0.0f, zOffset + step         };              // Top-left
             VertexPlane v3 = { xOffset + step, 0.0f, zOffset + step  };       // Top-right
-            /*
-            // Define the four corners of the quad on the x-z plane with texture coordinates
-            Vertex v0 = { xOffset,           0.0f, zOffset,           0.0f, 0.0f}; // Bottom-left
-            Vertex v1 = { xOffset + step,    0.0f, zOffset,           1.0f, 0.0f}; // Bottom-right
-            Vertex v2 = { xOffset,           0.0f, zOffset + step,    0.0f, 1.0f}; // Top-left
-            Vertex v3 = { xOffset + step,    0.0f, zOffset + step,    1.0f, 1.0f}; // Top-right
-            */
 
             // First triangle
             vertices.push_back(v0); // Bottom-left

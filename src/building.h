@@ -21,12 +21,18 @@ public:
     void init();
     void setCamera(Camera* camera);
     void setShader(wolf::Program* m_program);
+    void setColor(glm::vec3 color);
 
 private:
     wolf::VertexBuffer* m_pVB = 0;
     wolf::VertexDeclaration* m_pDecl = 0;
     wolf::Program* m_pProgram = 0;
     Camera* m_camera = nullptr; // Pointer to the camera
+
+
+    glm::vec3 m_position;
+    glm::vec3 m_size;
+    glm::vec3 m_color;
 
     void generateVertices();
     std::vector<VertexBuilding> vertices;
