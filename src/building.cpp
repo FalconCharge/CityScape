@@ -1,8 +1,59 @@
 #include "building.h"
 
+// Define the vertices for a cube
+const VertexBuilding cubeVertices[] = {
+    // Front face
+    { -0.5f, -0.5f,  0.5f,  0.0f, 0.0f }, // Bottom-left
+    {  0.5f, -0.5f,  0.5f,  1.0f, 0.0f }, // Bottom-right
+    {  0.5f,  0.5f,  0.5f,  1.0f, 1.0f }, // Top-right
+    { -0.5f, -0.5f,  0.5f,  0.0f, 0.0f }, // Bottom-left
+    {  0.5f,  0.5f,  0.5f,  1.0f, 1.0f }, // Top-right
+    { -0.5f,  0.5f,  0.5f,  0.0f, 1.0f }, // Top-left
+
+    // Back face
+    { -0.5f, -0.5f, -0.5f,  0.0f, 0.0f }, // Bottom-left
+    {  0.5f, -0.5f, -0.5f,  1.0f, 0.0f }, // Bottom-right
+    {  0.5f,  0.5f, -0.5f,  1.0f, 1.0f }, // Top-right
+    { -0.5f, -0.5f, -0.5f,  0.0f, 0.0f }, // Bottom-left
+    {  0.5f,  0.5f, -0.5f,  1.0f, 1.0f }, // Top-right
+    { -0.5f,  0.5f, -0.5f,  0.0f, 1.0f }, // Top-left
+
+    // Left face
+    { -0.5f, -0.5f, -0.5f,  0.0f, 0.0f }, // Bottom-left
+    { -0.5f, -0.5f,  0.5f,  1.0f, 0.0f }, // Bottom-right
+    { -0.5f,  0.5f,  0.5f,  1.0f, 1.0f }, // Top-right
+    { -0.5f, -0.5f, -0.5f,  0.0f, 0.0f }, // Bottom-left
+    { -0.5f,  0.5f,  0.5f,  1.0f, 1.0f }, // Top-right
+    { -0.5f,  0.5f, -0.5f,  0.0f, 1.0f }, // Top-left
+
+    // Right face
+    {  0.5f, -0.5f, -0.5f,  0.0f, 0.0f }, // Bottom-left
+    {  0.5f, -0.5f,  0.5f,  1.0f, 0.0f }, // Bottom-right
+    {  0.5f,  0.5f,  0.5f,  1.0f, 1.0f }, // Top-right
+    {  0.5f, -0.5f, -0.5f,  0.0f, 0.0f }, // Bottom-left
+    {  0.5f,  0.5f,  0.5f,  1.0f, 1.0f }, // Top-right
+    {  0.5f,  0.5f, -0.5f,  0.0f, 1.0f }, // Top-left
+
+    // Top face
+    { -0.5f,  0.5f, -0.5f,  0.0f, 0.0f }, // Bottom-left
+    {  0.5f,  0.5f, -0.5f,  1.0f, 0.0f }, // Bottom-right
+    {  0.5f,  0.5f,  0.5f,  1.0f, 1.0f }, // Top-right
+    { -0.5f,  0.5f, -0.5f,  0.0f, 0.0f }, // Bottom-left
+    {  0.5f,  0.5f,  0.5f,  1.0f, 1.0f }, // Top-right
+    { -0.5f,  0.5f,  0.5f,  0.0f, 1.0f }, // Top-left
+
+    // Bottom face
+    { -0.5f, -0.5f, -0.5f,  0.0f, 0.0f }, // Bottom-left
+    {  0.5f, -0.5f, -0.5f,  1.0f, 0.0f }, // Bottom-right
+    {  0.5f, -0.5f,  0.5f,  1.0f, 1.0f }, // Top-right
+    { -0.5f, -0.5f, -0.5f,  0.0f, 0.0f }, // Bottom-left
+    {  0.5f, -0.5f,  0.5f,  1.0f, 1.0f }, // Top-right
+    { -0.5f, -0.5f,  0.5f,  0.0f, 1.0f }  // Top-left
+};
+
 Building::Building(glm::vec3 pos, glm::vec3 size) {
     m_position = pos;
-    m_size = size;
+    m_scale = size;
 }
 Building::~Building(){
     printf("Destroying The Building\n");
@@ -17,7 +68,15 @@ void Building::setShader(wolf::Program* m_program){
     m_pProgram = m_program;
 }
 void Building::setColor(glm::vec3 color){
-    m_color = color;
+    //m_color = color; deleted becuase want to use textures
+}
+void Building::setPosition(glm::vec3 pos){
+    m_position = pos;
+    mWorld = glm::translate(mWorld, m_position); // Apply translation
+}
+void Building::setScale(glm::vec3 scale){
+    m_scale = scale;
+    mWorld = glm::scale(mWorld, scale); // Apply scale
 }
 void Building::init(){
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
@@ -37,12 +96,13 @@ void Building::init(){
 
     m_texture = wolf::TextureManager::CreateTexture("data/textures/bricksx64.png");
 
-
-    //printf("Successfully initialized Building\n");
+    // Initialize transformation matrix
+    mWorld = glm::mat4(1.0f);
+    mWorld = glm::translate(mWorld, m_position);    // Apply translation
+    mWorld = glm::scale(mWorld, m_scale);           // Apply scaling
 }
 void Building::render()
 { 
-    glm::mat4 mWorld(1.0f);
     glm::mat4 view = m_camera->getViewMatrix();
     glm::mat4 proj = m_camera->getProjMatrix(800, 800);
 
@@ -63,74 +123,9 @@ void Building::render()
     // Draw!
 	glDrawArrays(GL_TRIANGLES, 0, vertices.size());
 }
-void Building::generateVertices() {
+void Building::generateVertices(){
     vertices.clear();
-
-    float x = m_position.x;
-    float y = m_position.y;
-    float z = m_position.z;
-    float width = m_size.x;
-    float height = m_size.y;
-    float depth = m_size.z;
-
-    // Helper lambda to add a vertex with position and texture coordinates
-    auto addVertex = [&](float px, float py, float pz, float u, float v) {
-        VertexBuilding vtx = {px, py, pz, u, v};
-        vertices.push_back(vtx);
-    };
-
-    // Front face (facing positive Z direction) 
-    addVertex(x, y, z, 0.0f, 0.0f);                     // Bottom-left corner
-    addVertex(x + width, y, z, 1.0f, 0.0f);             // Bottom-right corner
-    addVertex(x + width, y + height, z, 1.0f, 1.0f);    // Top-right corner
-
-    addVertex(x, y, z, 0.0f, 0.0f);                     // Bottom-left corner (again, for the second triangle)
-    addVertex(x + width, y + height, z, 1.0f, 1.0f);    // Top-right corner
-    addVertex(x, y + height, z, 0.0f, 1.0f);            // Top-left corner
-
-    // Back face
-    addVertex(x, y, z - depth, 1.0f, 0.0f);
-    addVertex(x + width, y, z - depth, 0.0f, 0.0f);
-    addVertex(x + width, y + height, z - depth, 0.0f, 1.0f);
-
-    addVertex(x, y, z - depth, 1.0f, 0.0f);
-    addVertex(x + width, y + height, z - depth, 0.0f, 1.0f);
-    addVertex(x, y + height, z - depth, 1.0f, 1.0f);
-
-    // Left face
-    addVertex(x, y, z, 0.0f, 0.0f);
-    addVertex(x, y, z - depth, 1.0f, 0.0f);
-    addVertex(x, y + height, z - depth, 1.0f, 1.0f);
-
-    addVertex(x, y, z, 0.0f, 0.0f);
-    addVertex(x, y + height, z - depth, 1.0f, 1.0f);
-    addVertex(x, y + height, z, 0.0f, 1.0f);
-
-    // Right face
-    addVertex(x + width, y, z, 1.0f, 0.0f);
-    addVertex(x + width, y, z - depth, 0.0f, 0.0f);
-    addVertex(x + width, y + height, z - depth, 0.0f, 1.0f);
-
-    addVertex(x + width, y, z, 1.0f, 0.0f);
-    addVertex(x + width, y + height, z - depth, 0.0f, 1.0f);
-    addVertex(x + width, y + height, z, 1.0f, 1.0f);
-
-    // Top face
-    addVertex(x, y + height, z, 0.0f, 0.0f);
-    addVertex(x + width, y + height, z, 1.0f, 0.0f);
-    addVertex(x + width, y + height, z - depth, 1.0f, 1.0f);
-
-    addVertex(x, y + height, z, 0.0f, 0.0f);
-    addVertex(x + width, y + height, z - depth, 1.0f, 1.0f);
-    addVertex(x, y + height, z - depth, 0.0f, 1.0f);
-
-    // Bottom face
-    addVertex(x, y, z, 0.0f, 1.0f);
-    addVertex(x + width, y, z, 1.0f, 1.0f);
-    addVertex(x + width, y, z - depth, 1.0f, 0.0f);
-
-    addVertex(x, y, z, 0.0f, 1.0f);
-    addVertex(x + width, y, z - depth, 1.0f, 0.0f);
-    addVertex(x, y, z - depth, 0.0f, 0.0f);
-    
+    for(VertexBuilding vertex : cubeVertices){
+        vertices.push_back(vertex);
+    }
 }

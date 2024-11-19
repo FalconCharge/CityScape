@@ -41,7 +41,10 @@ void Camera::update(float dt) {
     glm::vec3 forwardXZ = glm::normalize(glm::vec3(m_front.x, 0.0f, m_front.z));
     glm::vec3 rightXZ = glm::normalize(glm::cross(forwardXZ, glm::vec3(0.0f, 1.0f, 0.0f)));
 
-    const float cameraSpeed = 2.0f * dt; // Adjust speed based on frame time (dt)
+    float cameraSpeed = 2.0f * dt; // Adjust speed based on frame time (dt)
+    if(m_pApp->isKeyDown(GLFW_KEY_LEFT_SHIFT)){
+        cameraSpeed *= 2;
+    }
     if (m_pApp->isKeyDown(GLFW_KEY_W)) {
         m_position += forwardXZ * cameraSpeed;
     }

@@ -27,21 +27,15 @@ void Grid::init() {
         for (int j = 0; j < m_cols; ++j) {
 
             // Generate random number between 1 and 4
-            int randomHeight = std::rand() % 8 + 1;
+            int randomHeight = std::rand() % 5 + 1;
 
-            // Generate random color components between 0 and 1 for RGB
-            float randomRed = static_cast<float>(std::rand()) / RAND_MAX;
-            float randomGreen = static_cast<float>(std::rand()) / RAND_MAX;
-            float randomBlue = static_cast<float>(std::rand()) / RAND_MAX;
-
-            glm::vec3 randomColor(randomRed, randomGreen, randomBlue);
 
             glm::vec3 pos = m_startPos + glm::vec3(i * (m_buildingSize.x + rowGap), 0.0f, j * (m_buildingSize.z + colGap));
             glm::vec3 randomBuildingSize = glm::vec3(m_buildingSize.x, randomHeight, m_buildingSize.z);
 
             Building* building = new Building(pos, randomBuildingSize);
             building->init();
-            //building->setColor(randomColor);
+            
             m_buildings.push_back(building);
         }
     }

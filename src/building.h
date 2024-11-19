@@ -7,7 +7,7 @@
 struct VertexBuilding
 {
 	GLfloat x,y,z;
-    GLfloat u, v;
+    GLfloat u,v;
 };
 
 class Building {
@@ -23,6 +23,9 @@ public:
     void setCamera(Camera* camera);
     void setShader(wolf::Program* m_program);
     void setColor(glm::vec3 color);
+    void setPosition(glm::vec3 pos);
+    void setScale(glm::vec3 scale);
+
 
 private:
     wolf::VertexBuffer* m_pVB = 0;
@@ -33,8 +36,8 @@ private:
 
 
     glm::vec3 m_position;
-    glm::vec3 m_size;
-    glm::vec3 m_color;
+    glm::vec3 m_scale;
+    glm::mat4 mWorld;
 
     void generateVertices();
     std::vector<VertexBuilding> vertices;
