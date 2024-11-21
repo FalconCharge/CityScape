@@ -14,6 +14,7 @@ struct VertexBuilding
 class Building {
 public:
     Building(glm::vec3 position, glm::vec3 size);
+    Building(glm::vec3 size);
     ~Building();
 
     void render();

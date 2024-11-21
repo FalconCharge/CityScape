@@ -62,7 +62,7 @@ void CityScape::regenerate(){
 void CityScape::createGrid(){
 
     grids.clear();
-    grid1 = new Grid(10, 10, glm::vec3(0.0f, 0.0f, 0.0f));
+    grid1 = new Grid(4, 4, glm::vec3(0.0f, 0.0f, 0.0f));
     grids.push_back(grid1);
 
     for (auto& grid : grids) {
@@ -71,5 +71,8 @@ void CityScape::createGrid(){
         grid->setCamera(camera);
         grid->setShader(m_building);
     }
+}
+void CityScape::createFakeGrid(){
+    FakeGrid grid(10, 10);
 }
 

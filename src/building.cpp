@@ -42,18 +42,23 @@ const VertexBuilding cubeVertices[] = {
     { 1.0f, 1.0f,  1.0f,  1.0f, 1.0f }, // Top-right
     { 0.0f, 1.0f,  1.0f,  0.0f, 1.0f }, // Top-left
 
-    // Bottom face
+    // Bottom face Not needed
+    /*
     { 0.0f, 0.0f,  0.0f,  0.0f, 0.0f }, // Bottom-left
     { 1.0f, 0.0f,  0.0f,  1.0f, 0.0f }, // Bottom-right
     { 1.0f, 0.0f,  1.0f,  1.0f, 1.0f }, // Top-right
     { 0.0f, 0.0f,  0.0f,  0.0f, 0.0f }, // Bottom-left
     { 1.0f, 0.0f,  1.0f,  1.0f, 1.0f }, // Top-right
     { 0.0f, 0.0f,  1.0f,  0.0f, 1.0f }  // Top-left
+    */
 };
 
 
 Building::Building(glm::vec3 pos, glm::vec3 size) {
     m_position = pos;
+    m_scale = size;
+}
+Building::Building(glm::vec3 size){
     m_scale = size;
 }
 Building::~Building(){

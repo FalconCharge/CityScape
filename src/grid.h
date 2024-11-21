@@ -4,6 +4,7 @@
 #include "../wolf/stb_image.h"
 #include "camera.h"
 #include "building.h"
+#include "fakeGrid.h"
 
 
 class Grid {
@@ -27,6 +28,8 @@ private:
 
     std::vector<Building*> m_buildings;  // Vector of Building pointers
     std::vector<std::vector<int>> m_grid;
+
+    FakeGrid* fakeGrid;
 
     bool checkSurroundingSquares(int i, int j, int m_rows, int m_cols, const std::vector<std::vector<int>>& m_grid);
     void setupBuildings();
