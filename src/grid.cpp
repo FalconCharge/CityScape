@@ -8,7 +8,7 @@ Grid::Grid(int rows, int cols, glm::vec3 startPos)
 
 Grid::~Grid() {
     // Clean up buildings
-    for (auto building : m_buildings) {
+    for (auto& building : m_buildings) {
         delete building; 
     }
 }
@@ -60,6 +60,22 @@ void Grid::init() {
 
     float gap = 1.0f;
 
+    build = new Building(glm::vec3(gap + 1), glm::vec3(gap));
+    build->init();
+    m_buildings.push_back(build);
+
+    for (int i = 0; i < m_rows; ++i) {
+        for (int j = 0; j < m_cols; ++j) {
+            glm::vec3 pos = m_startPos + glm::vec3(i + gap, 0.0f, j + gap);
+            glm::vec3 randomBuildingSize = glm::vec3(1.0f, 1.0f, 1.0f);
+
+            Building* building = new Building(pos, randomBuildingSize);
+            building->init();
+            m_buildings.push_back(building);
+
+        }
+    }
+    /*
     // Loop to generate buildings in a grid pattern
     for (int i = 0; i < m_rows; ++i) {
         for (int j = 0; j < m_cols; ++j) {
@@ -76,26 +92,27 @@ void Grid::init() {
             
             m_buildings.push_back(building);
         }
-    }
+        
+    }*/
 }
 
 
 
 void Grid::render() {
     // Render all buildings in the grid
-    for (auto building : m_buildings) {
+    for (auto& building : m_buildings) {
         building->render(); 
     }
 }
 void Grid::setCamera(Camera* camera) {
     //Set the camera
-    for (auto building : m_buildings) {
+    for (auto& building : m_buildings) {
         building->setCamera(camera); 
     }
 }
 void Grid::setShader(wolf::Program* shader) {
     // Set shaders
-    for (auto building : m_buildings) {
+    for (auto& building : m_buildings) {
         building->setShader(shader); 
     }
 }
