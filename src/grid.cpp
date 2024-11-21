@@ -60,17 +60,18 @@ void Grid::init() {
 
     float gap = 1.0f;
 
-    build = new Building(glm::vec3(gap + 1), glm::vec3(gap));
-    build->init();
-    m_buildings.push_back(build);
-
     for (int i = 0; i < m_rows; ++i) {
         for (int j = 0; j < m_cols; ++j) {
-            glm::vec3 pos = m_startPos + glm::vec3(i + gap, 0.0f, j + gap);
+
+            //glm::vec3 pos = m_startPos + glm::vec3(i + gap, 0.0f, j + gap);
             glm::vec3 randomBuildingSize = glm::vec3(1.0f, 1.0f, 1.0f);
 
-            Building* building = new Building(pos, randomBuildingSize);
+            Building* building = new Building(glm::vec3(1.0f, 0.0f, 1.0f), randomBuildingSize);
             building->init();
+            building->setPosition(glm::vec3(i * (building->getSize().x + gap), 0.0f, j * (building->getSize().z + gap)));
+
+            //Make an if the building is large on x increase ++i;
+            //Make an if the building is large on z increase ++j;
             m_buildings.push_back(building);
 
         }
