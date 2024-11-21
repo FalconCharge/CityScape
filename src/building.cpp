@@ -144,6 +144,18 @@ glm::vec3 Building::getSize() const{
     return m_scale;
 }
 
+void Building::debugPrint() const {
+    // Print the position and scale of the building
+    std::cout << "Building Position: (" 
+              << m_position.x << ", " 
+              << m_position.y << ", " 
+              << m_position.z << ")" << std::endl;
+
+    std::cout << "Building Scale: (" 
+              << m_scale.x << ", " 
+              << m_scale.y << ", " 
+              << m_scale.z << ")" << std::endl;
+}
 
 
 

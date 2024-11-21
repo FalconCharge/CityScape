@@ -35,6 +35,12 @@ void CityScape::init(){
     plane1->setCamera(camera);
     plane1->setScale(glm::vec3(50.0f, 0.0f, 50.0f));
 
+    building1 = new Building(glm::vec3(1.0f), glm::vec3(1.0f));
+    building1->init();
+    building1->setCamera(camera);
+    building1->setShader(m_building);
+
+
     regenerate();
 
 
@@ -48,7 +54,7 @@ void CityScape::render() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     if(plane1) plane1->render();
-
+    building1->render();
     for (auto& grid : grids) {
         grid->render();
     }
@@ -61,7 +67,7 @@ void CityScape::regenerate(){
 void CityScape::createGrid(){
 
     grids.clear();
-    grid1 = new Grid(10, 10, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f));
+    grid1 = new Grid(1, 1, glm::vec3(0.0f, 0.0f, 0.0f));
     grids.push_back(grid1);
 
     for (auto& grid : grids) {

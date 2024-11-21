@@ -24,6 +24,8 @@ public:
     void setPosition(glm::vec3 pos);
     void setScale(glm::vec3 scale);
     glm::vec3 getSize() const;
+    void debugPrint() const;
+    
 private:
     wolf::VertexBuffer* m_pVB = 0;
     wolf::VertexDeclaration* m_pDecl = 0;

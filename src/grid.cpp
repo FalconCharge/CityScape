@@ -3,8 +3,8 @@
 #include <ctime>    // For srand()
 #include <random>
 
-Grid::Grid(int rows, int cols, glm::vec3 startPos, glm::vec3 buildingSize)
-    : m_rows(rows), m_cols(cols), m_startPos(startPos), m_buildingSize(buildingSize) {}
+Grid::Grid(int rows, int cols, glm::vec3 startPos)
+    : m_rows(rows), m_cols(cols), m_startPos(startPos) {}
 
 Grid::~Grid() {
     // Clean up buildings
@@ -13,27 +13,63 @@ Grid::~Grid() {
     }
 }
 
-
+/*
 void Grid::init() {
     glEnable(GL_DEPTH_TEST);    //Had to turn this on somereason
+    m_buildings.clear();
 
     // Seed the random number generator once, ideally in the constructor or init function
     std::srand(std::time(0));
 
-    float gap = 1.0f;           //Gap in the grid
+    float gap = 3.0f;           //Gap in the grid
     float baseCellSize = 2.0f;  // Minimum width/depth of a building
 
     // Loop to generate buildings in a grid pattern
     for (int i = 0; i < m_rows; ++i) {
         for (int j = 0; j < m_cols; ++j) {
 
-            float width = (std::rand() % 200 + 1)/100;  // Width between 1 and 3 cells
-            int depth = (std::rand() % 200 + 1)/100;  // Depth between 1 and 3 cells
+            // Generate random numbers
+            int width = std::rand() % 3 + 1;  // Width between 1 and 3 cells
+            int depth = std::rand() % 3 + 1;  // Depth between 1 and 3 cells
             int height = std::rand() % 5 + 1; // Height between 1 and 5 units
 
             glm::vec3 pos = m_startPos + glm::vec3(i * gap, 0.0f, j * gap);
 
-            glm::vec3 randomBuildingSize = glm::vec3(width, height, depth);
+            glm::vec3 randomBuildingSize = glm::vec3(1.0f, 1.0f, 1.0f);
+
+            Building* building = new Building(pos, randomBuildingSize);
+            building->init();
+            building->debugPrint();
+            building->getSize().y;
+            std::cout << "Building Size Y: " << building->getSize().y << std::endl;
+            
+            m_buildings.push_back(building);
+            
+            build = new Building(glm::vec3(1.0f), glm::vec3(1.0f));
+            m_buildings.push_back(build);
+
+            m_buildings[0]->debugPrint();
+        }
+    }
+}*/
+void Grid::init() {
+    glEnable(GL_DEPTH_TEST);    //Had to turn this on somereason
+
+    // Seed the random number generator once, ideally in the constructor or init function
+    std::srand(std::time(0));
+
+    float gap = 1.0f;
+
+    // Loop to generate buildings in a grid pattern
+    for (int i = 0; i < m_rows; ++i) {
+        for (int j = 0; j < m_cols; ++j) {
+
+            // Generate random number between 1 and 4
+            int randomHeight = std::rand() % 5 + 1;
+
+
+            glm::vec3 pos = m_startPos + glm::vec3(i + gap, 0.0f, j + gap);
+            glm::vec3 randomBuildingSize = glm::vec3(1.0f, randomHeight, 1.0f);
 
             Building* building = new Building(pos, randomBuildingSize);
             building->init();
@@ -72,7 +108,6 @@ void Grid::printGrid() {
     }
     std::cout << std::endl;
 }
-
 // Function to check surrounding squares and return true if any cell has a value other than 0
 bool Grid::checkSurroundingSquares(int i, int j, int m_rows, int m_cols, const std::vector<std::vector<int>>& m_grid) {
     // List of directions: (dx, dy)

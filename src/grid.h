@@ -8,7 +8,7 @@
 
 class Grid {
 public:
-    Grid(int rows, int cols, glm::vec3 startPos, glm::vec3 buildingSize);  // Constructor
+    Grid(int rows, int cols, glm::vec3 startPos);  // Constructor
     ~Grid();  // Destructor
 
     void init();  // Initialize the grid of buildings
@@ -22,7 +22,8 @@ public:
 private:
     int m_rows, m_cols;  // Number of rows and columns
     glm::vec3 m_startPos;  // Starting position for grid generation
-    glm::vec3 m_buildingSize;  // Size of each building
+    
+    Building* build;
 
     std::vector<Building*> m_buildings;  // Vector of Building pointers
     std::vector<std::vector<int>> m_grid;
