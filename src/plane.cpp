@@ -1,17 +1,26 @@
 #include "plane.h"
 
 
-// Destructor
+const VertexPlane planeVertices[] = {
+    // Positions               // Texture Coordinates
+    {  0.0f,  0.0f,  0.0f,     0.0f, 0.0f },  // Bottom-left
+    {  1.0f,  0.0f,  0.0f,     1.0f, 0.0f },  // Bottom-right
+    {  1.0f,  0.0f,  1.0f,     1.0f, 1.0f },  // Top-right
+
+    {  0.0f,  0.0f,  0.0f,     0.0f, 0.0f },  // Bottom-left
+    {  1.0f,  0.0f,  1.0f,     1.0f, 1.0f },  // Top-right
+    {  0.0f,  0.0f,  1.0f,     0.0f, 1.0f },  // Top-left
+};
+Plane::Plane(){
+    this->init();
+}
 Plane::~Plane() {
     printf("Destroying The Plane\n");
     delete m_pDecl;
 	wolf::BufferManager::DestroyBuffer(m_pVB);
-    //glDeleteTextures(1, &m_tex);
+    wolf::TextureManager::DestroyTexture(m_texture);
 }
-
-//On init takes in the shader program to use
-void Plane::init(wolf::Program* m_program) {
-    m_pProgram = m_program;
+void Plane::init() {
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
     //Generate vertices Based on subdivisions
@@ -23,17 +32,16 @@ void Plane::init(wolf::Program* m_program) {
     m_pDecl = new wolf::VertexDeclaration();
     m_pDecl->Begin();
     m_pDecl->AppendAttribute(wolf::AT_Position, 3, wolf::CT_Float);
-    //m_pDecl->AppendAttribute(wolf::AT_TexCoord1, 2, wolf::CT_Float);
+    m_pDecl->AppendAttribute(wolf::AT_TexCoord1, 2, wolf::CT_Float);
     m_pDecl->SetVertexBuffer(m_pVB);
     m_pDecl->End();
 
-    m_time = 0.0f;
-
-    //loadTexture("data/grasstop.png");
-    //wolf::Texture* pTex = wolf::TextureManager::CreateTexture("data/grasstop.png");
+    
+    m_texture = wolf::TextureManager::CreateTexture("data/textures/grasstop.png");
+    m_texture->SetFilterMode(wolf::Texture::FM_Linear, wolf::Texture::FM_LinearMipmap);
+    m_texture->SetWrapMode(wolf::Texture::WM_Repeat, wolf::Texture::WM_Repeat);
 
     printf("Successfully initialized Plane\n");
-
 }
 void Plane::setCamera(Camera* camera){
     if(camera){
@@ -42,27 +50,29 @@ void Plane::setCamera(Camera* camera){
         printf("Camera doesnt exist\n");
     }
 }
+void Plane::setShader(wolf::Program* m_program){
+    m_pProgram = m_program;
+}
 void Plane::render()
 { 
-    glm::mat4 mWorld(1.0f);
+    
     glm::mat4 view = m_camera->getViewMatrix();
     glm::mat4 proj = m_camera->getProjMatrix(800, 800);
 
     // Use shader program.
 	m_pProgram->Bind();
     
-    //glActiveTexture(GL_TEXTURE0);
-	//glBindTexture(GL_TEXTURE_2D, m_tex);
 
 	// Bind Uniforms 
     m_pProgram->SetUniform("projection", proj); 
     m_pProgram->SetUniform("view", view);
-    m_pProgram->SetUniform("world", mWorld);
-    //m_pProgram->SetUniform("tex", 0);
+    m_pProgram->SetUniform("world", m_World);
 
-    m_pProgram->SetUniform("time", m_time);
+    m_pProgram->SetUniform("uScale", m_Scale.z);   //Supplying the width
+    m_pProgram->SetUniform("vScale", m_Scale.x);   //supplying the height
 
-    
+    m_texture->Bind(1);
+    m_pProgram->SetUniform("tex", 1);
 
 	// Set up source data
 	m_pDecl->Bind();
@@ -70,54 +80,15 @@ void Plane::render()
     // Draw!
 	glDrawArrays(GL_TRIANGLES, 0, vertices.size());
 }
-void Plane::update(float dt){
-    m_time += dt;
-}
 void Plane::generateVertices() {
-    if (subdivisions <= 0) {
-        printf("Subdivisions must be greater than 0.\n");
-        return; // Exit the function if subdivisions are not valid
-    }
-
     vertices.clear();
-    float size = 1000.0f; // Size of each plane
-    float step = size / subdivisions; // Calculate the distance between each vertex
-
-    // Nested loop to generate subdivisions
-    for (int i = 0; i < subdivisions; ++i) {
-        for (int j = 0; j < subdivisions; ++j) {
-
-            // Calculate the offset for centering the plane
-            float xOffset = j * step - (size / 2.0f); // Center the plane on x-axis
-            float zOffset = i * step - (size / 2.0f); // Center the plane on z-axis
-            
-            // Define the four corners of the quad on the x-z plane
-            VertexPlane v0 = { xOffset, 0.0f, zOffset                };                       // Bottom-left
-            VertexPlane v1 = { xOffset + step, 0.0f, zOffset         };              // Bottom-right
-            VertexPlane v2 = { xOffset, 0.0f, zOffset + step         };              // Top-left
-            VertexPlane v3 = { xOffset + step, 0.0f, zOffset + step  };       // Top-right
-
-            // First triangle
-            vertices.push_back(v0); // Bottom-left
-            vertices.push_back(v1); // Bottom-right
-            vertices.push_back(v2); // Top-left
-
-            // Second triangle
-            vertices.push_back(v1); // Bottom-right
-            vertices.push_back(v3); // Top-right
-            vertices.push_back(v2); // Top-left
-        }
+    for(VertexPlane vertex : planeVertices){
+        vertices.push_back(vertex);
     }
-
-    printf("Generated %zu vertices\n", vertices.size());
 }
-void Plane::loadTexture(char* texturePath) {
-    wolf::Texture* m_pTex = wolf::TextureManager::CreateTexture(texturePath);
-    if (m_pTex) {
-            printf("Texture loaded successfully!\n");
-        } else {
-            printf("Failed to load texture: %s\n", texturePath);
-        }
+void Plane::setScale(glm::vec3 scale){
+    m_Scale = scale;
+    m_World = glm::scale(m_World, m_Scale); // Apply scale
 }
 
 

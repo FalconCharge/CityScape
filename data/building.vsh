@@ -1,16 +1,21 @@
 uniform mat4 projection;
 uniform mat4 view;
 uniform mat4 world;
+uniform float uScale;
+uniform float vScale;
 
 in vec4 a_position;
 
 in vec2 a_uv1;
 out vec2 v_uv1;
+out vec3 debugColor;
 
 
 void main()
 {
     gl_Position = projection * view * world * a_position;
 
-    v_uv1 = a_uv1;
+    v_uv1 = a_uv1 * vec2(uScale, vScale);
+
+    debugColor = vec3(v_uv1, 0.0);
 }

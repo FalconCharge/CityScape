@@ -18,7 +18,7 @@ public:
     void update(float dt) override;
     void render() override;
 
-    void gridSetup();
+    void regenerate();
     
 
 private:
@@ -32,4 +32,5 @@ private:
     std::vector<Grid*> grids;
 
     Plane* plane1;
+    void createGrid();
 };

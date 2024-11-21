@@ -17,6 +17,7 @@ public:
     void setCamera(Camera* camera);  // Set camera for the buildings
     void setShader(wolf::Program* shader);  // Set shader for the buildings
     glm::vec3 getSize() const;
+    void printGrid();
 
 private:
     int m_rows, m_cols;  // Number of rows and columns
@@ -24,4 +25,9 @@ private:
     glm::vec3 m_buildingSize;  // Size of each building
 
     std::vector<Building*> m_buildings;  // Vector of Building pointers
+    std::vector<std::vector<int>> m_grid;
+
+    bool checkSurroundingSquares(int i, int j, int m_rows, int m_cols, const std::vector<std::vector<int>>& m_grid);
+    void setupBuildings();
+
 };
