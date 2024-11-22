@@ -54,13 +54,6 @@ const VertexBuilding cubeVertices[] = {
 };
 
 
-Building::Building(glm::vec3 pos, glm::vec3 size) {
-    m_position = pos;
-    m_scale = size;
-}
-Building::Building(glm::vec3 size){
-    m_scale = size;
-}
 Building::~Building(){
     printf("Destroying The Building\n");
     delete m_pDecl;
@@ -78,6 +71,7 @@ void Building::setColor(glm::vec3 color){
 }
 void Building::setPosition(glm::vec3 pos){
     m_position = pos;
+    mWorld = glm::mat4(1.0f);
     mWorld = glm::translate(mWorld, m_position); // Apply translation
 }
 void Building::setScale(glm::vec3 scale){
@@ -107,8 +101,6 @@ void Building::init(){
 
     // Initialize transformation matrix
     mWorld = glm::mat4(1.0f);
-    mWorld = glm::scale(mWorld, glm::vec3(m_scale.x, m_scale.y, m_scale.z));                        // Apply scale
-    mWorld = glm::translate(mWorld, glm::vec3(m_position.x, m_position.y * 2.0f, m_position.z));    // Apply translation
 
     uScale = m_scale.x;
     vScale = m_scale.y;
@@ -127,8 +119,8 @@ void Building::render()
     m_pProgram->SetUniform("view", view);
     m_pProgram->SetUniform("world", mWorld);
 
-    m_pProgram->SetUniform("uScale", uScale);   //Supplying the width
-    m_pProgram->SetUniform("vScale", vScale);   //supplying the height
+    m_pProgram->SetUniform("uScale", m_scale.x);   //Supplying the width
+    m_pProgram->SetUniform("vScale", m_scale.y);   //supplying the height
 
     m_texture->Bind(0);
     m_pProgram->SetUniform("tex", 0);
@@ -147,6 +139,9 @@ void Building::generateVertices(){
 }
 glm::vec3 Building::getSize() const{
     return m_scale;
+}
+glm::vec3 Building::getPosition() const{
+    return m_position;
 }
 
 void Building::debugPrint() const {

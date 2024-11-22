@@ -15,36 +15,44 @@ Grid::~Grid() {
 
 void Grid::init(){
     glEnable(GL_DEPTH_TEST);
-    std::srand(std::time(0));
+    generateGrid();
 
-    m_buildings.clear();
-
-    fakeGrid = new FakeGrid(m_rows, m_cols);
-
-    for(int i = 0; i < m_rows; ++i){
-        for(int j = 0; j < m_cols; ++j){
-
-            // Generate random dimensions for the building
-            int randomHeight = std::rand() % 5 + 1; // Height: 1 to 5
-            int randomWidth = std::rand() % 2 + 1;  // Width: 1 to 2
-            int randomDepth = std::rand() % 2 + 1;  // Depth: 1 to 2
-
-            glm::vec3 randomBuildingSize = glm::vec3(randomWidth, randomHeight, randomDepth);
-            
-            glm::vec3 position = glm::vec3(i, 0.0f, j);
-
-            Building* building = new Building(position, randomBuildingSize);
-            building->init();
-            m_buildings.push_back(building);
-
-            if(fakeGrid->placeBuilding(i, j, building)){
-                m_buildings.push_back(building);
-            }
-        }
-    }
-    fakeGrid->printGrid();
 
 }
+void Grid::generateGrid() {
+    glEnable(GL_DEPTH_TEST);
+    std::srand(std::time(0));
+
+
+    float gap = 1.0f; // Gap between buildings for spacing
+    float cellSize = 1.0f;
+    float currentX = 0.0f;
+    float currentZ = 0.0f;
+    
+    for (int x = 1; x < m_rows + 1; ++x) {
+        for (int z = 1; z < m_cols + 1; ++z) {
+            
+            int randomHeight = std::rand() % 10 + 2; // Height: 2 to 11
+            int randomWidth = std::rand() % 1 + 1;  // Width: 1
+            int randomDepth = std::rand() % 1 + 1;  // Depth: 1
+
+            glm::vec3 size = glm::vec3(randomWidth, randomHeight, randomDepth);
+
+            currentX = x * (size.x + gap); // Add gap after each building in the x-direction
+            currentZ = z * (size.z + gap); // Add gap after each building in the z-direction
+
+            glm::vec3 pos = glm::vec3(currentX, 0.0f, currentZ);
+
+            Building* building = new Building();
+            building->init();
+            building->setPosition(pos);
+            building->setScale(size);
+            m_buildings.push_back(building);
+        }
+    }
+}
+
+
 
 
 
@@ -65,40 +73,5 @@ void Grid::setShader(wolf::Program* shader) {
     for (auto& building : m_buildings) {
         building->setShader(shader); 
     }
-}
-void Grid::printGrid() {
-    for (int i = 0; i < m_rows; ++i) {
-        for (int j = 0; j < m_cols; ++j) {
-            std::cout << "[" << m_grid[i][j] << "] ";
-        }
-        std::cout << std::endl;  // New line after each row
-    }
-    std::cout << std::endl;
-}
-// Function to check surrounding squares and return true if any cell has a value other than 0
-bool Grid::checkSurroundingSquares(int i, int j, int m_rows, int m_cols, const std::vector<std::vector<int>>& m_grid) {
-    // List of directions: (dx, dy)
-    std::vector<std::pair<int, int>> directions = {
-        {-1, -1}, {-1, 0}, {-1, 1},  // Top-left, Top, Top-right
-        {0, -1}, {0, 1},              // Left, Right
-        {1, -1}, {1, 0}, {1, 1}       // Bottom-left, Bottom, Bottom-right
-    };
-
-    // Loop through all surrounding squares
-    for (const auto& dir : directions) {
-        int new_i = i + dir.first;
-        int new_j = j + dir.second;
-
-        // Check if the new indices are within the bounds of the grid
-        if (new_i >= 0 && new_i < m_rows && new_j >= 0 && new_j < m_cols) {
-            if (m_grid[new_i][new_j] != 0) {
-                // If the cell has any value other than 0, return true
-                return true;
-            }
-        }
-    }
-
-    // Return false if no surrounding cells had a value other than 0
-    return false;
 }
 

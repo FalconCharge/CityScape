@@ -7,6 +7,7 @@
 #include "plane.h"
 #include "grid.h"
 #include "fakeGrid.h"
+#include "../samplefw/Grid3D.h"
 
 
 //Generates the city enviroment
@@ -25,6 +26,9 @@ public:
 private:
     Camera* camera;
     Grid* grid1;
+    FakeGrid* fakeGrid;
+
+    Grid3D* grid3d;
     
     
     wolf::Program* m_plane = 0;

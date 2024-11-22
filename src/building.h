@@ -13,8 +13,6 @@ struct VertexBuilding
 
 class Building {
 public:
-    Building(glm::vec3 position, glm::vec3 size);
-    Building(glm::vec3 size);
     ~Building();
 
     void render();
@@ -25,6 +23,7 @@ public:
     void setPosition(glm::vec3 pos);
     void setScale(glm::vec3 scale);
     glm::vec3 getSize() const;
+    glm::vec3 getPosition() const;
     void debugPrint() const;
     
 private:

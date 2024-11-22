@@ -22,8 +22,12 @@ void CityScape::update(float dt) {
     if(this->isKeyDown(GLFW_KEY_R)){
         regenerate();
     }
+    grid3d->update(dt);
 }
 void CityScape::init(){
+
+    grid3d = new Grid3D(1000, 1.0f);
+
     //Get the shader ready
     m_plane = wolf::ProgramManager::CreateProgram("data/cube.vsh", "data/cube.fsh"); //Shader for the shader Nov.12
     m_building = wolf::ProgramManager::CreateProgram("data/building.vsh", "data/building.fsh"); //Shader for the shader Nov.12
@@ -34,11 +38,7 @@ void CityScape::init(){
     plane1->setShader(m_building);
     plane1->setCamera(camera);
     plane1->setScale(glm::vec3(50.0f, 0.0f, 50.0f));
-
-
-
     regenerate();
-
 
     printf("initilized the city!\n");
 }
@@ -53,6 +53,7 @@ void CityScape::render() {
     for (auto& grid : grids) {
         grid->render();
     }
+    grid3d->render(camera->getViewMatrix(), camera->getProjMatrix(800, 800));
    
 }
 void CityScape::regenerate(){
@@ -62,7 +63,7 @@ void CityScape::regenerate(){
 void CityScape::createGrid(){
 
     grids.clear();
-    grid1 = new Grid(4, 4, glm::vec3(0.0f, 0.0f, 0.0f));
+    grid1 = new Grid(5, 5, glm::vec3(0.0f, 0.0f, 0.0f));
     grids.push_back(grid1);
 
     for (auto& grid : grids) {
@@ -73,6 +74,6 @@ void CityScape::createGrid(){
     }
 }
 void CityScape::createFakeGrid(){
-    FakeGrid grid(10, 10);
+    fakeGrid = new FakeGrid(100.0f, 100.0f, 2.0f);
 }
 

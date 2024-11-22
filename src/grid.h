@@ -33,5 +33,9 @@ private:
 
     bool checkSurroundingSquares(int i, int j, int m_rows, int m_cols, const std::vector<std::vector<int>>& m_grid);
     void setupBuildings();
+    void generateGrid();
+    void generateGrid1();
+
+    float gap;      // Gap between buildings
 
 };
