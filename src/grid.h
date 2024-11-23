@@ -4,7 +4,6 @@
 #include "../wolf/stb_image.h"
 #include "camera.h"
 #include "building.h"
-#include "fakeGrid.h"
 
 
 class Grid {
@@ -19,6 +18,7 @@ public:
     void setShader(wolf::Program* shader);  // Set shader for the buildings
     glm::vec3 getSize() const;
     void printGrid();
+    glm::vec3 getGridSize() const;
 
 private:
     int m_rows, m_cols;  // Number of rows and columns
@@ -29,12 +29,13 @@ private:
     std::vector<Building*> m_buildings;  // Vector of Building pointers
     std::vector<std::vector<int>> m_grid;
 
-    FakeGrid* fakeGrid;
 
-    bool checkSurroundingSquares(int i, int j, int m_rows, int m_cols, const std::vector<std::vector<int>>& m_grid);
-    void setupBuildings();
-    void generateGrid();
-    void generateGrid1();
+    std::vector<Building*> prevRowBuildings; // Stores buildings from the previous row
+    std::vector<Building*> currentRowBuildings; // Stores buildings from the current row
+
+
+    void generateGrid(glm::vec3 m_startPos);
+
 
     float gap;      // Gap between buildings
 

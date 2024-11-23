@@ -6,7 +6,6 @@
 #include "camera.h"
 #include "plane.h"
 #include "grid.h"
-#include "fakeGrid.h"
 #include "../samplefw/Grid3D.h"
 
 
@@ -25,8 +24,7 @@ public:
 
 private:
     Camera* camera;
-    Grid* grid1;
-    FakeGrid* fakeGrid;
+    //Grid* grid1;
 
     Grid3D* grid3d;
     
@@ -38,5 +36,4 @@ private:
 
     Plane* plane1;
     void createGrid();
-    void createFakeGrid();
 };

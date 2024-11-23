@@ -60,10 +60,11 @@ void CityScape::regenerate(){
     grids.clear();
     createGrid();
 }
+/*
 void CityScape::createGrid(){
 
     grids.clear();
-    grid1 = new Grid(5, 5, glm::vec3(0.0f, 0.0f, 0.0f));
+    grid1 = new Grid(10, 10, glm::vec3(0.0f, 0.0f, 0.0f));
     grids.push_back(grid1);
 
     for (auto& grid : grids) {
@@ -72,8 +73,48 @@ void CityScape::createGrid(){
         grid->setCamera(camera);
         grid->setShader(m_building);
     }
+}*/
+void CityScape::createGrid() {
+    grids.clear();
+
+    float gridGap = 2.0f; // Gap between grids
+    int gridRows = 10;     // Number of rows per grid
+    int gridCols = 10;     // Number of columns per grid
+    glm::vec3 initialPosition(0.0f, 0.0f, 0.0f); // Starting position for the first grid
+
+    // Create the first grid to calculate its size
+    Grid* firstGrid = new Grid(gridRows, gridCols, initialPosition);
+    firstGrid->init();
+    glm::vec3 gridSize = firstGrid->getGridSize(); // Calculate the size of a single grid
+
+    // Push the first grid to the list
+    grids.push_back(firstGrid);
+
+    // Use nested loops to create the remaining grids
+    for (int x = 0; x < 2; ++x) { // 2 grids along the x-axis
+        for (int z = 0; z < 2; ++z) { // 2 grids along the z-axis
+            // Skip (0, 0) since the first grid is already created
+            if (x == 0 && z == 0) continue;
+
+            // Calculate the starting position of the new grid
+            glm::vec3 position = initialPosition + glm::vec3(x * (gridSize.x + gridGap), 0.0f, z * (gridSize.z + gridGap));
+
+            // Create the new grid and add it to the list
+            Grid* grid = new Grid(gridRows, gridCols, position);
+            grids.push_back(grid);
+        }
+    }
+
+    // Initialize all grids
+    for (auto& grid : grids) {
+        grid->init();
+        grid->setCamera(camera);
+        grid->setShader(m_building);
+    }
+
+    std::cout << "Created " << grids.size() << " grids." << std::endl;
 }
-void CityScape::createFakeGrid(){
-    fakeGrid = new FakeGrid(100.0f, 100.0f, 2.0f);
-}
+
+
+
 
