@@ -24,7 +24,9 @@ public:
     void setScale(glm::vec3 scale);
     glm::vec3 getSize() const;
     glm::vec3 getPosition() const;
-    void debugPrint() const;
+
+    static const std::vector<VertexBuilding>& getVertices(); // Return static vertices
+    static const std::vector<unsigned short>& getIndices();  // Return static indices
     
 private:
     wolf::VertexBuffer* m_pVB = 0;

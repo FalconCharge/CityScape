@@ -142,7 +142,7 @@ void Building::render()
     // Draw!
     glDrawElements(GL_TRIANGLES, sizeof(cubeIndices) / sizeof(cubeIndices[0]), GL_UNSIGNED_SHORT, nullptr);
 }
-void Building::(){
+void Building::generateVertices(){
     vertices.clear();
     for(VertexBuilding vertex : cubeVertices){
         vertices.push_back(vertex);
