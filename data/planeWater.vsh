@@ -6,7 +6,7 @@ out vec2 v_uv1;
 void main()
 {
     gl_Position = projection * a_position;
-	v_uv1 = a_uv1;
+	v_uv1 = a_uv1 * 6;  
 }
 
 

@@ -6,6 +6,11 @@ CityScape::CityScape() : wolf::App("CityScape"){
     camera->init();
 
     this->init();
+
+    glEnable(GL_CULL_FACE);
+
+ 
+
 }
 
 CityScape::~CityScape() {
@@ -35,7 +40,7 @@ void CityScape::init(){
 
     //Setup the plane
     plane1 = new Plane();
-    plane1->setShader(m_building);
+    plane1->setShader(m_plane);
     plane1->setCamera(camera);
     plane1->setScale(glm::vec3(50.0f, 0.0f, 50.0f));
     regenerate();

@@ -14,13 +14,10 @@ Grid::~Grid() {
 }
 
 void Grid::init(){
-    glEnable(GL_DEPTH_TEST);
     generateGrid(m_startPos);
-
-
 }
 void Grid::generateGrid(glm::vec3 m_startPos) {
-    glEnable(GL_DEPTH_TEST);
+
     std::srand(std::time(0));
 
     float gap = 1.0f; // Gap between buildings for spacing

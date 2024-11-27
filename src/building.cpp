@@ -43,14 +43,14 @@ const VertexBuilding cubeVertices[] = {
     { 0.0f, 1.0f,  1.0f,  0.0f, 1.0f }, // Top-left
 
     // Bottom face Not needed
-    /*
+    
     { 0.0f, 0.0f,  0.0f,  0.0f, 0.0f }, // Bottom-left
     { 1.0f, 0.0f,  0.0f,  1.0f, 0.0f }, // Bottom-right
     { 1.0f, 0.0f,  1.0f,  1.0f, 1.0f }, // Top-right
     { 0.0f, 0.0f,  0.0f,  0.0f, 0.0f }, // Bottom-left
     { 1.0f, 0.0f,  1.0f,  1.0f, 1.0f }, // Top-right
     { 0.0f, 0.0f,  1.0f,  0.0f, 1.0f }  // Top-left
-    */
+    
 };
 
 

@@ -4,12 +4,12 @@
 const VertexPlane planeVertices[] = {
     // Positions               // Texture Coordinates
     {  0.0f,  0.0f,  0.0f,     0.0f, 0.0f },  // Bottom-left
-    {  1.0f,  0.0f,  0.0f,     1.0f, 0.0f },  // Bottom-right
+    {  0.0f,  0.0f,  1.0f,     1.0f, 0.0f },  // Bottom-right
     {  1.0f,  0.0f,  1.0f,     1.0f, 1.0f },  // Top-right
 
     {  0.0f,  0.0f,  0.0f,     0.0f, 0.0f },  // Bottom-left
     {  1.0f,  0.0f,  1.0f,     1.0f, 1.0f },  // Top-right
-    {  0.0f,  0.0f,  1.0f,     0.0f, 1.0f },  // Top-left
+    {  1.0f,  0.0f,  0.0f,     0.0f, 1.0f },  // Top-left
 };
 Plane::Plane(){
     this->init();
