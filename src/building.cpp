@@ -1,58 +1,65 @@
 #include "building.h"
 
-// Define the vertices for a cube with positive coordinates
+// Define the vertices for a cube with UV cords
 const VertexBuilding cubeVertices[] = {
     // Front face
-    { 0.0f, 0.0f,  1.0f,  0.0f, 0.0f }, // Bottom-left
-    { 1.0f, 0.0f,  1.0f,  1.0f, 0.0f }, // Bottom-right
-    { 1.0f, 1.0f,  1.0f,  1.0f, 1.0f }, // Top-right
-    { 0.0f, 0.0f,  1.0f,  0.0f, 0.0f }, // Bottom-left
-    { 1.0f, 1.0f,  1.0f,  1.0f, 1.0f }, // Top-right
-    { 0.0f, 1.0f,  1.0f,  0.0f, 1.0f }, // Top-left
+    { 0.0f, 0.0f, 1.0f,  0.0f, 0.0f }, // Bottom-left
+    { 1.0f, 0.0f, 1.0f,  1.0f, 0.0f }, // Bottom-right
+    { 1.0f, 1.0f, 1.0f,  1.0f, 1.0f }, // Top-right
+    { 0.0f, 1.0f, 1.0f,  0.0f, 1.0f }, // Top-left
 
     // Back face
-    { 0.0f, 0.0f,  0.0f,  0.0f, 0.0f }, // Bottom-left
-    { 1.0f, 0.0f,  0.0f,  1.0f, 0.0f }, // Bottom-right
-    { 1.0f, 1.0f,  0.0f,  1.0f, 1.0f }, // Top-right
-    { 0.0f, 0.0f,  0.0f,  0.0f, 0.0f }, // Bottom-left
-    { 1.0f, 1.0f,  0.0f,  1.0f, 1.0f }, // Top-right
-    { 0.0f, 1.0f,  0.0f,  0.0f, 1.0f }, // Top-left
+    { 0.0f, 0.0f, 0.0f,  0.0f, 0.0f }, // Bottom-left
+    { 1.0f, 0.0f, 0.0f,  1.0f, 0.0f }, // Bottom-right
+    { 1.0f, 1.0f, 0.0f,  1.0f, 1.0f }, // Top-right
+    { 0.0f, 1.0f, 0.0f,  0.0f, 1.0f }, // Top-left
 
     // Left face
-    { 0.0f, 0.0f,  0.0f,  0.0f, 0.0f }, // Bottom-left
-    { 0.0f, 0.0f,  1.0f,  1.0f, 0.0f }, // Bottom-right
-    { 0.0f, 1.0f,  1.0f,  1.0f, 1.0f }, // Top-right
-    { 0.0f, 0.0f,  0.0f,  0.0f, 0.0f }, // Bottom-left
-    { 0.0f, 1.0f,  1.0f,  1.0f, 1.0f }, // Top-right
-    { 0.0f, 1.0f,  0.0f,  0.0f, 1.0f }, // Top-left
+    { 0.0f, 0.0f, 0.0f,  0.0f, 0.0f }, // Bottom-left
+    { 0.0f, 0.0f, 1.0f,  1.0f, 0.0f }, // Bottom-right
+    { 0.0f, 1.0f, 1.0f,  1.0f, 1.0f }, // Top-right
+    { 0.0f, 1.0f, 0.0f,  0.0f, 1.0f }, // Top-left
 
     // Right face
-    { 1.0f, 0.0f,  0.0f,  0.0f, 0.0f }, // Bottom-left
-    { 1.0f, 0.0f,  1.0f,  1.0f, 0.0f }, // Bottom-right
-    { 1.0f, 1.0f,  1.0f,  1.0f, 1.0f }, // Top-right
-    { 1.0f, 0.0f,  0.0f,  0.0f, 0.0f }, // Bottom-left
-    { 1.0f, 1.0f,  1.0f,  1.0f, 1.0f }, // Top-right
-    { 1.0f, 1.0f,  0.0f,  0.0f, 1.0f }, // Top-left
+    { 1.0f, 0.0f, 0.0f,  0.0f, 0.0f }, // Bottom-left
+    { 1.0f, 0.0f, 1.0f,  1.0f, 0.0f }, // Bottom-right
+    { 1.0f, 1.0f, 1.0f,  1.0f, 1.0f }, // Top-right
+    { 1.0f, 1.0f, 0.0f,  0.0f, 1.0f }, // Top-left
 
     // Top face
-    { 0.0f, 1.0f,  0.0f,  0.0f, 0.0f }, // Bottom-left
-    { 1.0f, 1.0f,  0.0f,  1.0f, 0.0f }, // Bottom-right
-    { 1.0f, 1.0f,  1.0f,  1.0f, 1.0f }, // Top-right
-    { 0.0f, 1.0f,  0.0f,  0.0f, 0.0f }, // Bottom-left
-    { 1.0f, 1.0f,  1.0f,  1.0f, 1.0f }, // Top-right
-    { 0.0f, 1.0f,  1.0f,  0.0f, 1.0f }, // Top-left
+    { 0.0f, 1.0f, 0.0f,  0.0f, 0.0f }, // Bottom-left
+    { 0.0f, 1.0f, 1.0f,  1.0f, 0.0f }, // Bottom-right
+    { 1.0f, 1.0f, 1.0f,  1.0f, 1.0f }, // Top-right
+    { 1.0f, 1.0f, 0.0f,  0.0f, 1.0f }, // Top-left
 
-    // Bottom face Not needed
-    
-    { 0.0f, 0.0f,  0.0f,  0.0f, 0.0f }, // Bottom-left
-    { 1.0f, 0.0f,  0.0f,  1.0f, 0.0f }, // Bottom-right
-    { 1.0f, 0.0f,  1.0f,  1.0f, 1.0f }, // Top-right
-    { 0.0f, 0.0f,  0.0f,  0.0f, 0.0f }, // Bottom-left
-    { 1.0f, 0.0f,  1.0f,  1.0f, 1.0f }, // Top-right
-    { 0.0f, 0.0f,  1.0f,  0.0f, 1.0f }  // Top-left
-    
+    // Bottom face
+    { 0.0f, 0.0f, 0.0f,  0.0f, 0.0f }, // Bottom-left
+    { 0.0f, 0.0f, 1.0f,  1.0f, 0.0f }, // Bottom-right
+    { 1.0f, 0.0f, 1.0f,  1.0f, 1.0f }, // Top-right
+    { 1.0f, 0.0f, 0.0f,  0.0f, 1.0f }  // Top-left
 };
 
+const unsigned short cubeIndices[] = {
+    // Front face
+    0, 1, 2,  // Triangle 1
+    0, 2, 3,  // Triangle 2
+
+    // Back face
+    4, 6, 5,    //Triangle 1
+    4, 7, 6,    //Triangle 2
+
+    //left face
+    8, 9, 10, // Triangle 1
+    8, 10, 11, // Triangle 2    
+
+    // Right face
+    12, 14, 13, // Triangle 1
+    12, 15, 14, // Triangle 2
+
+    // Top face
+    16, 17, 18, // Triangle 1
+    16, 18, 19, // Triangle 2
+};
 
 Building::~Building(){
     printf("Destroying The Building\n");
@@ -85,6 +92,9 @@ void Building::init(){
     generateVertices();
 
     m_pVB = wolf::BufferManager::CreateVertexBuffer(vertices.data(), vertices.size() * sizeof(VertexBuilding));
+
+    // Create the index buffer
+    m_pIB = wolf::BufferManager::CreateIndexBuffer(cubeIndices, sizeof(cubeIndices) / sizeof(cubeIndices[0]));
 
     // Set up the vertex declaration
     m_pDecl = new wolf::VertexDeclaration();
@@ -127,11 +137,12 @@ void Building::render()
 
 	// Set up source data
 	m_pDecl->Bind();
+    m_pIB->Bind();
 
     // Draw!
-	glDrawArrays(GL_TRIANGLES, 0, vertices.size());
+    glDrawElements(GL_TRIANGLES, sizeof(cubeIndices) / sizeof(cubeIndices[0]), GL_UNSIGNED_SHORT, nullptr);
 }
-void Building::generateVertices(){
+void Building::(){
     vertices.clear();
     for(VertexBuilding vertex : cubeVertices){
         vertices.push_back(vertex);
@@ -144,18 +155,8 @@ glm::vec3 Building::getPosition() const{
     return m_position;
 }
 
-void Building::debugPrint() const {
-    // Print the position and scale of the building
-    std::cout << "Building Position: (" 
-              << m_position.x << ", " 
-              << m_position.y << ", " 
-              << m_position.z << ")" << std::endl;
 
-    std::cout << "Building Scale: (" 
-              << m_scale.x << ", " 
-              << m_scale.y << ", " 
-              << m_scale.z << ")" << std::endl;
-}
+
 
 
 

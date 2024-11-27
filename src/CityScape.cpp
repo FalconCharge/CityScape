@@ -7,10 +7,7 @@ CityScape::CityScape() : wolf::App("CityScape"){
 
     this->init();
 
-    glEnable(GL_CULL_FACE);
-
- 
-
+    glEnable(GL_CULL_FACE); //Doesn't render the inside faces
 }
 
 CityScape::~CityScape() {
