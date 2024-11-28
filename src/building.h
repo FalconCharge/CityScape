@@ -31,10 +31,12 @@ public:
 private:
     wolf::VertexBuffer* m_pVB = 0;
     wolf::IndexBuffer* m_pIB = 0;
+    wolf::IndexBuffer* m_pIBR = 0;
 
     wolf::VertexDeclaration* m_pDecl = 0;
     wolf::Program* m_pProgram = 0;
     wolf::Texture* m_texture;
+    wolf::Texture* m_rooftexture;
     Camera* m_camera = nullptr;
 
     glm::vec3 m_position;

@@ -60,12 +60,37 @@ const unsigned short cubeIndices[] = {
     16, 17, 18, // Triangle 1
     16, 18, 19, // Triangle 2
 };
+const unsigned short wallIndices[] = {
+    // Front face
+    0, 1, 2,  // Triangle 1
+    0, 2, 3,  // Triangle 2
+
+    // Back face
+    4, 6, 5,    //Triangle 1
+    4, 7, 6,    //Triangle 2
+
+    //left face
+    8, 9, 10, // Triangle 1
+    8, 10, 11, // Triangle 2    
+
+    // Right face
+    12, 14, 13, // Triangle 1
+    12, 15, 14, // Triangle 2
+};
+const unsigned short roofIndices[] = {
+    // Top face
+    16, 17, 18, // Triangle 1
+    16, 18, 19, // Triangle 2
+};
 
 Building::~Building(){
     printf("Destroying The Building\n");
     delete m_pDecl;
 	wolf::BufferManager::DestroyBuffer(m_pVB);
     wolf::TextureManager::DestroyTexture(m_texture);
+    wolf::TextureManager::DestroyTexture(m_rooftexture);
+    wolf::BufferManager::DestroyBuffer(m_pIB);
+    wolf::BufferManager::DestroyBuffer(m_pIBR);
 }
 void Building::setCamera(Camera* camera){
     m_camera = camera;
@@ -94,7 +119,9 @@ void Building::init(){
     m_pVB = wolf::BufferManager::CreateVertexBuffer(vertices.data(), vertices.size() * sizeof(VertexBuilding));
 
     // Create the index buffer
-    m_pIB = wolf::BufferManager::CreateIndexBuffer(cubeIndices, sizeof(cubeIndices) / sizeof(cubeIndices[0]));
+    //m_pIB = wolf::BufferManager::CreateIndexBuffer(cubeIndices, sizeof(cubeIndices) / sizeof(cubeIndices[0]));
+    m_pIB = wolf::BufferManager::CreateIndexBuffer(wallIndices, sizeof(wallIndices) / sizeof(wallIndices[0]));
+    m_pIBR = wolf::BufferManager::CreateIndexBuffer(roofIndices, sizeof(roofIndices) / sizeof(roofIndices[0]));
 
     // Set up the vertex declaration
     m_pDecl = new wolf::VertexDeclaration();
@@ -109,11 +136,12 @@ void Building::init(){
     m_texture->SetFilterMode(wolf::Texture::FM_Linear, wolf::Texture::FM_LinearMipmap);
     m_texture->SetWrapMode(wolf::Texture::WM_Repeat, wolf::Texture::WM_Repeat);
 
+    m_rooftexture = wolf::TextureManager::CreateTexture("data/textures/BenRoof.png");
+    m_rooftexture->SetFilterMode(wolf::Texture::FM_Linear, wolf::Texture::FM_LinearMipmap);
+    m_rooftexture->SetWrapMode(wolf::Texture::WM_MirroredRepeat, wolf::Texture::WM_MirroredRepeat);
+
     // Initialize transformation matrix
     mWorld = glm::mat4(1.0f);
-
-    uScale = m_scale.x;
-    vScale = m_scale.y;
 
 }
 void Building::render()
@@ -132,7 +160,7 @@ void Building::render()
     m_pProgram->SetUniform("uScale", m_scale.x);   //Supplying the width
     m_pProgram->SetUniform("vScale", m_scale.y);   //supplying the height
 
-    m_texture->Bind(0);
+    m_texture->Bind(0);                     //Supply the texture and bind it
     m_pProgram->SetUniform("tex", 0);
 
 	// Set up source data
@@ -140,7 +168,17 @@ void Building::render()
     m_pIB->Bind();
 
     // Draw!
-    glDrawElements(GL_TRIANGLES, sizeof(cubeIndices) / sizeof(cubeIndices[0]), GL_UNSIGNED_SHORT, nullptr);
+    glDrawElements(GL_TRIANGLES, sizeof(wallIndices) / sizeof(wallIndices[0]), GL_UNSIGNED_SHORT, nullptr);
+
+
+    m_rooftexture->Bind(0);
+    m_pProgram->SetUniform("tex", 0);
+    m_pIBR->Bind();
+    glDrawElements(GL_TRIANGLES, sizeof(roofIndices) / sizeof(roofIndices[0]), GL_UNSIGNED_SHORT, nullptr);
+
+
+
+
 }
 void Building::generateVertices(){
     vertices.clear();
