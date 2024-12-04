@@ -24,13 +24,12 @@ public:
 
 private:
     Camera* camera;
-    //Grid* grid1;
-
     Grid3D* grid3d;
     
     
     wolf::Program* m_plane = 0;
     wolf::Program* m_building = 0;
+    wolf::Program* m_buildingRoof = 0;
 
     std::vector<Grid*> grids;
 

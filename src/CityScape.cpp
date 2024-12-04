@@ -31,9 +31,9 @@ void CityScape::init(){
     grid3d = new Grid3D(1000, 1.0f);
 
     //Get the shader ready
-    m_plane = wolf::ProgramManager::CreateProgram("data/cube.vsh", "data/cube.fsh"); //Shader for the shader Nov.12
+    m_plane = wolf::ProgramManager::CreateProgram("data/plane.vsh", "data/plane.fsh"); //Shader for the shader Nov.12
     m_building = wolf::ProgramManager::CreateProgram("data/building.vsh", "data/building.fsh"); //Shader for the shader Nov.12
-
+    m_buildingRoof = wolf::ProgramManager::CreateProgram("data/buildingRoof.vsh", "data/building.fsh"); //Shader for the shader Nov.12
 
     //Setup the plane
     plane1 = new Plane();
@@ -52,6 +52,7 @@ void CityScape::render() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     if(plane1) plane1->render();
+
     for (auto& grid : grids) {
         grid->render();
     }
@@ -62,31 +63,19 @@ void CityScape::regenerate(){
     grids.clear();
     createGrid();
 }
-/*
-void CityScape::createGrid(){
-
-    grids.clear();
-    grid1 = new Grid(10, 10, glm::vec3(0.0f, 0.0f, 0.0f));
-    grids.push_back(grid1);
-
-    for (auto& grid : grids) {
-        // Initialize the grid
-        grid->init();
-        grid->setCamera(camera);
-        grid->setShader(m_building);
-    }
-}*/
 void CityScape::createGrid() {
     grids.clear();
 
     float gridGap = 2.0f; // Gap between grids
     int gridRows = 10;     // Number of rows per grid
     int gridCols = 10;     // Number of columns per grid
+
     glm::vec3 initialPosition(0.0f, 0.0f, 0.0f); // Starting position for the first grid
 
     // Create the first grid to calculate its size
     Grid* firstGrid = new Grid(gridRows, gridCols, initialPosition);
     firstGrid->init();
+
     glm::vec3 gridSize = firstGrid->getGridSize(); // Calculate the size of a single grid
 
     // Push the first grid to the list
@@ -111,7 +100,7 @@ void CityScape::createGrid() {
     for (auto& grid : grids) {
         grid->init();
         grid->setCamera(camera);
-        grid->setShader(m_building);
+        grid->setShader(m_building, m_buildingRoof);
     }
 
     std::cout << "Created " << grids.size() << " grids." << std::endl;

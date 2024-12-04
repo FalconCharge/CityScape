@@ -15,7 +15,7 @@ public:
     void render();  // Render all buildings
 
     void setCamera(Camera* camera);  // Set camera for the buildings
-    void setShader(wolf::Program* shader);  // Set shader for the buildings
+    void setShader(wolf::Program* shader, wolf::Program* roofShader);  // Set shader for the buildings
     glm::vec3 getSize() const;
     void printGrid();
     glm::vec3 getGridSize() const;

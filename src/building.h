@@ -18,7 +18,7 @@ public:
     void render();
     void init();
     void setCamera(Camera* camera);
-    void setShader(wolf::Program* m_program);
+    void setShader(wolf::Program* m_program, wolf::Program* roofShader);
     void setColor(glm::vec3 color);
     void setPosition(glm::vec3 pos);
     void setScale(glm::vec3 scale);
@@ -35,6 +35,7 @@ private:
 
     wolf::VertexDeclaration* m_pDecl = 0;
     wolf::Program* m_pProgram = 0;
+    wolf::Program* m_roofShader = 0;
     wolf::Texture* m_texture;
     wolf::Texture* m_rooftexture;
     Camera* m_camera = nullptr;

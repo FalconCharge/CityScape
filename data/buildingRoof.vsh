@@ -12,5 +12,6 @@ out vec2 v_uv1;
 void main()
 {
     gl_Position = mvp * a_position;
+
     v_uv1 = a_uv1 * vec2(uScale, vScale);
 }

@@ -55,18 +55,16 @@ void Plane::setShader(wolf::Program* m_program){
 }
 void Plane::render()
 { 
-    
     glm::mat4 view = m_camera->getViewMatrix();
     glm::mat4 proj = m_camera->getProjMatrix(800, 800);
+
+    glm::mat4 mvp = proj * view * m_World;
 
     // Use shader program.
 	m_pProgram->Bind();
     
-
 	// Bind Uniforms 
-    m_pProgram->SetUniform("projection", proj); 
-    m_pProgram->SetUniform("view", view);
-    m_pProgram->SetUniform("world", m_World);
+    m_pProgram->SetUniform("mvp", mvp);
 
     m_pProgram->SetUniform("uScale", m_Scale.z);   //Supplying the width
     m_pProgram->SetUniform("vScale", m_Scale.x);   //supplying the height

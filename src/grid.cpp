@@ -24,6 +24,9 @@ void Grid::generateGrid(glm::vec3 m_startPos) {
     std::vector<Building*> prevRowBuildings; // Stores buildings from the previous row
     std::vector<Building*> currentRowBuildings; // Stores buildings from the current row
 
+    float maxRowLength = m_startPos.x + m_rows + (m_rows * gap);
+    float currentZ = m_startPos.z;
+
     for (int x = 0; x < m_rows; ++x) {
         float currentX = m_startPos.x; // Reset X position for the new row
 
@@ -41,7 +44,6 @@ void Grid::generateGrid(glm::vec3 m_startPos) {
             }
 
             // Determine the Z position based on the corresponding building in the previous row
-            float currentZ = m_startPos.z;
             if (z < prevRowBuildings.size()) {
                 currentZ = prevRowBuildings[z]->getPosition().z + prevRowBuildings[z]->getSize().z + gap;
             }
@@ -69,7 +71,6 @@ void Grid::generateGrid(glm::vec3 m_startPos) {
 
 
 
-
 void Grid::render() {
     // Render all buildings in the grid
     for (auto& building : m_buildings) {
@@ -82,10 +83,10 @@ void Grid::setCamera(Camera* camera) {
         building->setCamera(camera); 
     }
 }
-void Grid::setShader(wolf::Program* shader) {
+void Grid::setShader(wolf::Program* shader, wolf::Program* roofShader) {
     // Set shaders
     for (auto& building : m_buildings) {
-        building->setShader(shader); 
+        building->setShader(shader, roofShader); 
     }
 }
 glm::vec3 Grid::getGridSize() const {
