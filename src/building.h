@@ -16,7 +16,7 @@ public:
     ~Building();
 
     void render();
-    void init();
+    void init(wolf::Program* shader, wolf::Program* shaderRoof, Camera* camera);
     void setCamera(Camera* camera);
     void setShader(wolf::Program* m_program, wolf::Program* roofShader);
     void setColor(glm::vec3 color);

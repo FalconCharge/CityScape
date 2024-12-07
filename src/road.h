@@ -8,7 +8,7 @@
 struct VertexRoad
 {
 	GLfloat x,y,z;
-    //GLfloat u,v;
+    GLfloat u,v;
 };
 
 class Road {
@@ -45,6 +45,7 @@ private:
     wolf::VertexBuffer* m_pVB = 0;
     wolf::IndexBuffer* m_pIB = 0;
     wolf::VertexDeclaration* m_pDecl = 0;
+    wolf::Texture* m_texture;
 
     std::vector<VertexRoad> vertices;
     std::vector<unsigned int> indices;
@@ -58,6 +59,4 @@ private:
     // Starting position of the road
     glm::vec3 m_startPosition;
 
-    // Optional: Texture or other rendering properties (e.g., color, material)
-    unsigned int m_textureID; // ID of the texture used for the road
 };

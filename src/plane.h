@@ -18,18 +18,15 @@ public:
     // Destructor
     ~Plane();
 
-    void init();
-    void update(float dt);
+    void init(wolf::Program* shader, Camera* camera);
     void render();
-    void setCamera(Camera* camera);
-    void setShader(wolf::Program* shader);
     void setScale(glm::vec3);
-   
-
-
+    void setPosition(glm::vec3);
+    void setShader(wolf::Program* shader);
 private:
-    wolf::VertexBuffer* m_pVB = 0;
+    wolf::VertexBuffer* m_VBplane = 0;
     wolf::VertexDeclaration* m_pDecl = 0;
+    
     wolf::Program* m_pProgram = 0;
     Camera* m_camera = nullptr;
     wolf::Texture* m_texture;
@@ -39,6 +36,8 @@ private:
 
     
     void generateVertices();
+    void setCamera(Camera* camera);
+
     std::vector<VertexPlane> vertices;
     
 

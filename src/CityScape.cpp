@@ -4,10 +4,14 @@ CityScape::CityScape() : wolf::App("CityScape"){
     //init the camera!
     camera = new Camera(this);
     camera->init();
+    camera->setScreenSize(getScreenSize());
 
     this->init();
 
     glEnable(GL_CULL_FACE); //Doesn't render the inside faces
+    glEnable(GL_DEPTH_TEST);
+    //glDepthFunc(GL_LESS); // Ensure fragments closer to the camera are drawn
+
 }
 
 CityScape::~CityScape() {
@@ -22,26 +26,29 @@ void CityScape::update(float dt) {
         camera->update(dt); // Update the camera's position and state
     }
     if(this->isKeyDown(GLFW_KEY_R)){
-        regenerate();
+        regenerate();       //If "R" is pressed regenerate the city
     }
-    grid3d->update(dt);
+    
 }
 void CityScape::init(){
 
-    grid3d = new Grid3D(1000, 1.0f);
+    grid3d = new Grid3D(1000, 1.0f);    //Create a grid for debugging
 
-    //Get the shader ready
+    //Get the shaders ready
     m_plane = wolf::ProgramManager::CreateProgram("data/plane.vsh", "data/plane.fsh"); //Shader for the shader Nov.12
     m_building = wolf::ProgramManager::CreateProgram("data/building.vsh", "data/building.fsh"); //Shader for the shader Nov.12
     m_buildingRoof = wolf::ProgramManager::CreateProgram("data/buildingRoof.vsh", "data/building.fsh"); //Shader for the shader Nov.12
+    m_road = wolf::ProgramManager::CreateProgram("data/road.vsh", "data/road.fsh");
 
     m_default = wolf::ProgramManager::CreateProgram("data/default.vsh", "data/default.fsh");
 
-    //Setup the plane
+    //Setup the plane Should change this to be in the regenerate
+    //So when I call this the plane renders!! wow!!
     plane1 = new Plane();
-    plane1->setShader(m_plane);
-    plane1->setCamera(camera);
-    plane1->setScale(glm::vec3(50.0f, 0.0f, 50.0f));
+    plane1->init(m_plane, camera);
+    plane1->setPosition(glm::vec3(-5.0f, 0.0f, -5.0f));
+    plane1->setScale(glm::vec3(100.0f, 1.0f, 100.0f));
+    
 
     regenerate();
 
@@ -54,65 +61,122 @@ void CityScape::render() {
     glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    if(plane1) plane1->render();
+    grid3d->render(camera->getViewMatrix(), camera->getProjMatrix());   //Render the 3D grid for debugging
+
     for (auto& grid : grids) {
         grid->render();
     }
-    grid3d->render(camera->getViewMatrix(), camera->getProjMatrix(800, 800));
+    for(auto& road : roads){
+        road->render();
+    }
+    for(auto& plane : planes){
+        plane->render();
+    }
    
 }
 void CityScape::regenerate(){
     grids.clear();
     createGrid();
 }
+/*
 void CityScape::createGrid() {
     grids.clear();
 
-    float gridGap = 3.0f; // Gap between grids
-    int gridSize = 20.0f;   //Used to define how much the grid expands in the x or z
+    float gridGapX = 1.0f;   // Gap between grids
+    float gridGapZ = 3.0f;   // Gap between rows
+    int gridSize = 20.0f;    // Size of a single grid
 
     glm::vec3 initialPosition(0.0f, 0.0f, 0.0f); // Starting position for the first grid
-    glm::vec3 endPosition = glm::vec3(initialPosition.x + gridSize, initialPosition.y, initialPosition.z + gridSize);
 
-    // Create the first grid to calculate its size
-    Grid* firstGrid = new Grid(initialPosition, endPosition);
-    firstGrid->init();
+    // Use nested loops to create the grids and roads
+    for (int x = 0; x < 3; ++x) {       // 3 grids along the x-axis
+        for (int z = 0; z < 3; ++z) {   // 3 grids along the z-axis
+            // Calculate the starting and ending positions of the new grid
+            glm::vec3 position = initialPosition + glm::vec3(x * (gridSize + gridGapX), 0.0f, z * (gridSize + gridGapZ));
+            glm::vec3 endPosition = position + glm::vec3(gridSize, 0.0f, gridSize);
 
-    glm::vec3 gridFinalSize = firstGrid->getGridSize(); // Calculate the size of a single grid
-
-    // Push the first grid to the list
-    grids.push_back(firstGrid);
-    
-    // Use nested loops to create the remaining grids
-    for (int x = 0; x < 2; ++x) { // 2 grids along the x-axis
-        for (int z = 0; z < 2; ++z) { // 2 grids along the z-axis
-            // Skip (0, 0) since the first grid is already created
-            if (x == 0 && z == 0) continue;
-
-            // Calculate the starting position of the new grid
-            glm::vec3 position = initialPosition + glm::vec3(x * (gridFinalSize.x + gridGap), 0.0f, z * (gridFinalSize.z + gridGap));
-            glm::vec3 endPos = glm::vec3(position.x + gridSize, position.y, position.z + gridSize);
-
-            // Create the new grid and add it to the list
-            Grid* grid = new Grid(position, endPos);
+            // Create the grid
+            Grid* grid = new Grid(position, endPosition);
             grids.push_back(grid);
+
+            // Add a road aligned to the bottom-right of the grid
+            glm::vec3 roadPosition = glm::vec3(position.x, 0.1f, position.z - gridGapZ + 1.0f); // Place at bottom of grid
+            Road* road = new Road(gridSize + gridGapX, 1.0f, roadPosition); // Road width matches grid size
+            road->setCamera(camera);
+            road->setShader(m_road);
+            roads.push_back(road); // Add the road to the list
+            
         }
     }
-    float count = 0;
+
     // Initialize all grids
+    float count = 0;
     for (auto& grid : grids) {
         grid->init();
         grid->setCamera(camera);
         grid->setShader(m_building, m_buildingRoof);
-        for(auto& building : grid->getBuildings()){
+
+        for (auto& building : grid->getBuildings()) {
             count++;
         }
-        printf("Amount of Buildings is %f \n", count);
     }
 
-    std::cout << "Created " << grids.size() << " grids." << std::endl;
+    printf("Amount of Buildings: %f\n", count);
+    std::cout << "Created " << grids.size() << " grids and " << roads.size() << " roads." << std::endl;
 }
+*/
+void CityScape::createGrid() {
+    grids.clear();
+    roads.clear();
+    planes.clear();
 
+    float gridGapX = 1.0f;   // Gap between grids
+    float gridGapZ = 3.0f;   // Gap between rows
+    int gridSize = 20.0f;    // Size of a single grid
 
+    glm::vec3 initialPosition(0.0f, 0.0f, 0.0f); // Starting position for the first grid
+
+    // Use nested loops to create the grids, roads, and planes
+    for (int x = 0; x < 3; ++x) {       // 3 grids along the x-axis
+        for (int z = 0; z < 3; ++z) {   // 3 grids along the z-axis
+            // Calculate the starting and ending positions of the new grid
+            glm::vec3 position = initialPosition + glm::vec3(x * (gridSize + gridGapX), 0.0f, z * (gridSize + gridGapZ));
+            glm::vec3 endPosition = position + glm::vec3(gridSize, 0.0f, gridSize);
+
+            // Create the grid
+            Grid* grid = new Grid(position, endPosition);
+            grids.push_back(grid);
+
+            // Create a plane for this grid
+            Plane* plane = new Plane();
+            plane->init(m_plane, camera);
+            plane->setPosition(glm::vec3(position.x - 1.0f, 0.0f, position.z -1.0f)); // Align plane to grid position
+            plane->setScale(glm::vec3(gridSize + 2.0f, 1.0f, gridSize + 2.0f)); // Scale plane to grid size
+            planes.push_back(plane);
+
+            // Add a road aligned to the bottom-right of the grid
+            glm::vec3 roadPosition = glm::vec3(position.x, 0.0f, position.z - gridGapZ + 1.0f); // Place road at the bottom of the grid
+            Road* road = new Road(gridSize + gridGapX, 1.0f, roadPosition);
+            road->setCamera(camera);
+            road->setShader(m_road);
+            roads.push_back(road);
+            
+        }
+    }
+
+    // Initialize all grids
+    float count = 0;
+    for (auto& grid : grids) {
+        grid->init();
+        grid->setCamera(camera);
+        grid->setShader(m_building, m_buildingRoof);
+
+        for (auto& building : grid->getBuildings()) {
+            count++;
+        }
+    }
+    printf("Amount of Buildings: %f\n", count);
+    std::cout << "Created " << grids.size() << " grids, " << roads.size() << " roads, and " << planes.size() << " planes." << std::endl;
+}
 
 

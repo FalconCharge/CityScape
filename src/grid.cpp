@@ -46,7 +46,7 @@ void Grid::generateGrid() {
             //Could be turned into a single line
             // Add the building to the grid 
             Building* building = new Building();
-            building->init();
+            building->init(shaderWalls, shaderRoof, camera);
             building->setPosition(position);
             building->setScale(size);
             m_buildings.push_back(building);

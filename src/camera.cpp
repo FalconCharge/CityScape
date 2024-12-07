@@ -9,7 +9,6 @@ void Camera::init(){
     m_pApp->hideCursor();
     printf("Camera init\n");
 }
-
 void Camera::update(float dt) {
     glm::vec2 screenCenter(m_pApp->getScreenSize().x / 2.0f, m_pApp->getScreenSize().y / 2.0f);
     glm::vec2 mousePos = m_pApp->getMousePos();  // Get mouse position (x, y) in window space
@@ -31,7 +30,7 @@ void Camera::update(float dt) {
     m_pitch += offsetY;
 
     //Limits from player looking to high
-    m_pitch = glm::clamp(m_pitch, -89.0f, 80.0f);
+    m_pitch = glm::clamp(m_pitch, -89.0f, 89.0f);
 
     // Update the front vector based on yaw and pitch
     updateCameraVectors();
@@ -67,7 +66,6 @@ void Camera::update(float dt) {
         this->invertCamera();
     }
 
-
 }
 void Camera::updateCameraVectors() {
     // Calculate the new front vector based on yaw and pitch
@@ -84,13 +82,16 @@ void Camera::updateCameraVectors() {
 glm::mat4 Camera::getViewMatrix(){      
     return glm::lookAt(m_position, m_position + m_front, m_up);
 }
-glm::mat4 Camera::getProjMatrix(int width, int height)
-{
-	return glm::perspective(m_fov, (float)width / (float)height, m_near, m_far);
+glm::mat4 Camera::getProjMatrix() {
+    return glm::perspective(m_fov, (float)m_screenWidth / (float)m_screenHeight, m_near, m_far);
 }
 glm::vec3 Camera::getViewPosition(){
     return m_position;
 }
 void Camera::invertCamera(){
-    m_inverted = true;
+    m_inverted = !m_inverted;
+}
+void Camera::setScreenSize(glm::vec2 screenSize) {
+    m_screenWidth = screenSize.x;
+    m_screenHeight = screenSize.y;
 }

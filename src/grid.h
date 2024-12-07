@@ -39,4 +39,8 @@ private:
 
     float gap;      // Gap between buildings
 
+    Camera* camera;
+    wolf::Program* shaderRoof;
+    wolf::Program* shaderWalls;
+
 };

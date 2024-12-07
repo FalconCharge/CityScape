@@ -92,11 +92,21 @@ Building::~Building(){
     wolf::BufferManager::DestroyBuffer(m_pIBR);
 }
 void Building::setCamera(Camera* camera){
+   if(camera != nullptr){
     m_camera = camera;
+   }else{
+    printf("Camera does not exist on building!\n");
+   }
 }
 void Building::setShader(wolf::Program* m_program, wolf::Program* roofShader){
-    m_pProgram = m_program;
-    m_roofShader = roofShader;
+
+    if(m_program != 0 || roofShader != 0){
+        m_pProgram = m_program;
+        m_roofShader = roofShader;
+    }else{
+        printf("Shader's do not exist on building!\n");
+    }
+    
 }
 void Building::setColor(glm::vec3 color){
     m_color = color;
@@ -110,7 +120,10 @@ void Building::setScale(glm::vec3 scale){
     m_scale = scale;
     mWorld = glm::scale(mWorld, scale); // Apply scale
 }
-void Building::init(){
+void Building::init(wolf::Program* shader, wolf::Program* shaderRoof, Camera* camera){
+
+    setShader(shader, shaderRoof);
+    setCamera(camera);
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
     //Generate vertices
@@ -145,15 +158,16 @@ void Building::init(){
 }
 void Building::render()
 { 
+    
     glm::mat4 view = m_camera->getViewMatrix();
-    glm::mat4 proj = m_camera->getProjMatrix(800, 800);
+    glm::mat4 proj = m_camera->getProjMatrix();
 
     glm::mat4 mvp = proj * view * mWorld;
 
     // Use shader program.
-	m_pProgram->Bind();
+    m_pProgram->Bind();
     
-	// Bind Uniforms 
+    // Bind Uniforms 
     m_pProgram->SetUniform("mvp", mvp);
 
     m_pProgram->SetUniform("uScale", m_scale.x);   //Supplying the width
@@ -162,8 +176,8 @@ void Building::render()
     m_texture->Bind(0);                     //Supply the texture and bind it
     m_pProgram->SetUniform("tex", 0);
 
-	// Set up source data
-	m_pDecl->Bind();
+    // Set up source data
+    m_pDecl->Bind();
     m_pIB->Bind();
 
     // Draw!
@@ -185,6 +199,8 @@ void Building::render()
 
     glDrawElements(GL_TRIANGLES, sizeof(roofIndices) / sizeof(roofIndices[0]), GL_UNSIGNED_SHORT, nullptr);
 
+
+
 }
 void Building::generateVertices(){
     vertices.clear();
@@ -198,9 +214,3 @@ glm::vec3 Building::getSize() const{
 glm::vec3 Building::getPosition() const{
     return m_position;
 }
-
-
-
-
-
-
