@@ -132,11 +132,11 @@ void Building::init(){
 
     //Make it wrap
     m_texture = wolf::TextureManager::CreateTexture("data/textures/BenWallWindows.png");
-    m_texture->SetFilterMode(wolf::Texture::FM_Linear, wolf::Texture::FM_LinearMipmap);
+    m_texture->SetFilterMode(wolf::Texture::FM_LinearMipmap, wolf::Texture::FM_LinearMipmap);
     m_texture->SetWrapMode(wolf::Texture::WM_Repeat, wolf::Texture::WM_Repeat);
 
     m_rooftexture = wolf::TextureManager::CreateTexture("data/textures/BenRoof.png");
-    m_rooftexture->SetFilterMode(wolf::Texture::FM_Linear, wolf::Texture::FM_LinearMipmap);
+    m_rooftexture->SetFilterMode(wolf::Texture::FM_LinearMipmap, wolf::Texture::FM_LinearMipmap);
     m_rooftexture->SetWrapMode(wolf::Texture::WM_Repeat, wolf::Texture::WM_Repeat);
 
     // Initialize transformation matrix
@@ -184,9 +184,6 @@ void Building::render()
     m_pIBR->Bind();
 
     glDrawElements(GL_TRIANGLES, sizeof(roofIndices) / sizeof(roofIndices[0]), GL_UNSIGNED_SHORT, nullptr);
-
-
-
 
 }
 void Building::generateVertices(){

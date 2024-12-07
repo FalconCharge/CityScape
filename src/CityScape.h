@@ -6,6 +6,7 @@
 #include "camera.h"
 #include "plane.h"
 #include "grid.h"
+#include "road.h"
 #include "../samplefw/Grid3D.h"
 
 
@@ -25,11 +26,13 @@ public:
 private:
     Camera* camera;
     Grid3D* grid3d;
+    Road* road;
     
     
     wolf::Program* m_plane = 0;
     wolf::Program* m_building = 0;
     wolf::Program* m_buildingRoof = 0;
+    wolf::Program* m_default = 0;
 
     std::vector<Grid*> grids;
 

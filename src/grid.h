@@ -8,7 +8,7 @@
 
 class Grid {
 public:
-    Grid(int rows, int cols, glm::vec3 startPos);  // Constructor
+    Grid(glm::vec3 startPos, glm::vec3 endPos);  // Constructor
     ~Grid();  // Destructor
 
     void init();  // Initialize the grid of buildings
@@ -16,13 +16,13 @@ public:
 
     void setCamera(Camera* camera);  // Set camera for the buildings
     void setShader(wolf::Program* shader, wolf::Program* roofShader);  // Set shader for the buildings
-    glm::vec3 getSize() const;
     void printGrid();
     glm::vec3 getGridSize() const;
+    std::vector<Building*> getBuildings();
 
 private:
-    int m_rows, m_cols;  // Number of rows and columns
     glm::vec3 m_startPos;  // Starting position for grid generation
+    glm::vec3 m_endPos;     //Where the grid should end generating
     
     Building* build;
 
@@ -34,7 +34,7 @@ private:
     std::vector<Building*> currentRowBuildings; // Stores buildings from the current row
 
 
-    void generateGrid(glm::vec3 m_startPos);
+    void generateGrid();
 
 
     float gap;      // Gap between buildings
