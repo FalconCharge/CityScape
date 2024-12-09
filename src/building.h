@@ -3,12 +3,14 @@
 #include "../wolf/wolf.h"
 #include "../wolf/stb_image.h"
 #include "camera.h"
+#include "sun.h"
 #include <iostream>
 
 struct VertexBuilding
 {
-	GLfloat x,y,z;
-    GLfloat u,v;
+	GLfloat x,y,z;       //Pos
+    GLfloat u,v;         //Tex coords
+    GLfloat nx, ny, nz;  // Normal vector
 };
 
 class Building {
@@ -16,12 +18,13 @@ public:
     ~Building();
 
     void render();
-    void init();
+    void init(wolf::Program* shader, wolf::Program* shaderRoof, Camera* camera);
     void setCamera(Camera* camera);
     void setShader(wolf::Program* m_program, wolf::Program* roofShader);
     void setColor(glm::vec3 color);
     void setPosition(glm::vec3 pos);
     void setScale(glm::vec3 scale);
+    void setSun(Sun* sun);
     glm::vec3 getSize() const;
     glm::vec3 getPosition() const;
 
@@ -44,6 +47,7 @@ private:
     glm::vec3 m_scale;
     glm::vec3 m_color;
     glm::mat4 mWorld;
+    Sun* buildingSun;
     float uScale;
     float vScale;
 

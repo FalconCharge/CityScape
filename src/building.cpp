@@ -1,42 +1,41 @@
 #include "building.h"
-
-// Define the vertices for a cube with UV cords
+// Define the vertices for a cube with UV coordinates and normals
 const VertexBuilding cubeVertices[] = {
-    // Front face
-    { 0.0f, 0.0f, 1.0f,  0.0f, 0.0f }, // Bottom-left
-    { 1.0f, 0.0f, 1.0f,  1.0f, 0.0f }, // Bottom-right
-    { 1.0f, 1.0f, 1.0f,  1.0f, 1.0f }, // Top-right
-    { 0.0f, 1.0f, 1.0f,  0.0f, 1.0f }, // Top-left
+    // Front face (normal: (0.0f, 0.0f, 1.0f))
+    { 0.0f, 0.0f, 1.0f,  0.0f, 0.0f,  0.0f, 0.0f, 1.0f }, // Bottom-left
+    { 1.0f, 0.0f, 1.0f,  1.0f, 0.0f,  0.0f, 0.0f, 1.0f }, // Bottom-right
+    { 1.0f, 1.0f, 1.0f,  1.0f, 1.0f,  0.0f, 0.0f, 1.0f }, // Top-right
+    { 0.0f, 1.0f, 1.0f,  0.0f, 1.0f,  0.0f, 0.0f, 1.0f }, // Top-left
 
-    // Back face
-    { 0.0f, 0.0f, 0.0f,  0.0f, 0.0f }, // Bottom-left
-    { 1.0f, 0.0f, 0.0f,  1.0f, 0.0f }, // Bottom-right
-    { 1.0f, 1.0f, 0.0f,  1.0f, 1.0f }, // Top-right
-    { 0.0f, 1.0f, 0.0f,  0.0f, 1.0f }, // Top-left
+    // Back face (normal: (0.0f, 0.0f, -1.0f))
+    { 0.0f, 0.0f, 0.0f,  0.0f, 0.0f,  0.0f, 0.0f, -1.0f }, // Bottom-left
+    { 1.0f, 0.0f, 0.0f,  1.0f, 0.0f,  0.0f, 0.0f, -1.0f }, // Bottom-right
+    { 1.0f, 1.0f, 0.0f,  1.0f, 1.0f,  0.0f, 0.0f, -1.0f }, // Top-right
+    { 0.0f, 1.0f, 0.0f,  0.0f, 1.0f,  0.0f, 0.0f, -1.0f }, // Top-left
 
-    // Left face
-    { 0.0f, 0.0f, 0.0f,  0.0f, 0.0f }, // Bottom-left
-    { 0.0f, 0.0f, 1.0f,  1.0f, 0.0f }, // Bottom-right
-    { 0.0f, 1.0f, 1.0f,  1.0f, 1.0f }, // Top-right
-    { 0.0f, 1.0f, 0.0f,  0.0f, 1.0f }, // Top-left
+    // Left face (normal: (-1.0f, 0.0f, 0.0f))
+    { 0.0f, 0.0f, 0.0f,  0.0f, 0.0f,  -1.0f, 0.0f, 0.0f }, // Bottom-left
+    { 0.0f, 0.0f, 1.0f,  1.0f, 0.0f,  -1.0f, 0.0f, 0.0f }, // Bottom-right
+    { 0.0f, 1.0f, 1.0f,  1.0f, 1.0f,  -1.0f, 0.0f, 0.0f }, // Top-right
+    { 0.0f, 1.0f, 0.0f,  0.0f, 1.0f,  -1.0f, 0.0f, 0.0f }, // Top-left
 
-    // Right face
-    { 1.0f, 0.0f, 0.0f,  0.0f, 0.0f }, // Bottom-left
-    { 1.0f, 0.0f, 1.0f,  1.0f, 0.0f }, // Bottom-right
-    { 1.0f, 1.0f, 1.0f,  1.0f, 1.0f }, // Top-right
-    { 1.0f, 1.0f, 0.0f,  0.0f, 1.0f }, // Top-left
+    // Right face (normal: (1.0f, 0.0f, 0.0f))
+    { 1.0f, 0.0f, 0.0f,  0.0f, 0.0f,  1.0f, 0.0f, 0.0f }, // Bottom-left
+    { 1.0f, 0.0f, 1.0f,  1.0f, 0.0f,  1.0f, 0.0f, 0.0f }, // Bottom-right
+    { 1.0f, 1.0f, 1.0f,  1.0f, 1.0f,  1.0f, 0.0f, 0.0f }, // Top-right
+    { 1.0f, 1.0f, 0.0f,  0.0f, 1.0f,  1.0f, 0.0f, 0.0f }, // Top-left
 
-    // Top face
-    { 0.0f, 1.0f, 0.0f,  0.0f, 0.0f }, // Bottom-left
-    { 0.0f, 1.0f, 1.0f,  1.0f, 0.0f }, // Bottom-right
-    { 1.0f, 1.0f, 1.0f,  1.0f, 1.0f }, // Top-right
-    { 1.0f, 1.0f, 0.0f,  0.0f, 1.0f }, // Top-left
+    // Top face (normal: (0.0f, 1.0f, 0.0f))
+    { 0.0f, 1.0f, 0.0f,  0.0f, 0.0f,  1.0f, 1.0f, 1.0f }, // Bottom-left
+    { 0.0f, 1.0f, 1.0f,  1.0f, 0.0f,  0.7f, 0.7f, 0.0f }, // Bottom-right
+    { 1.0f, 1.0f, 1.0f,  1.0f, 1.0f,  0.7f, 0.7f, 0.0f }, // Top-right
+    { 1.0f, 1.0f, 0.0f,  0.0f, 1.0f,  1.0f, 0.0f, 0.0f }, // Top-left
 
-    // Bottom face
-    { 0.0f, 0.0f, 0.0f,  0.0f, 0.0f }, // Bottom-left
-    { 0.0f, 0.0f, 1.0f,  1.0f, 0.0f }, // Bottom-right
-    { 1.0f, 0.0f, 1.0f,  1.0f, 1.0f }, // Top-right
-    { 1.0f, 0.0f, 0.0f,  0.0f, 1.0f }  // Top-left
+    // Bottom face (normal: (0.0f, -1.0f, 0.0f))
+    { 0.0f, 0.0f, 0.0f,  0.0f, 0.0f,  0.0f, -1.0f, 0.0f }, // Bottom-left
+    { 0.0f, 0.0f, 1.0f,  1.0f, 0.0f,  0.0f, -1.0f, 0.0f }, // Bottom-right
+    { 1.0f, 0.0f, 1.0f,  1.0f, 1.0f,  0.0f, -1.0f, 0.0f }, // Top-right
+    { 1.0f, 0.0f, 0.0f,  0.0f, 1.0f,  0.0f, -1.0f, 0.0f }  // Top-left
 };
 const unsigned short cubeIndices[] = {
     // Front face
@@ -92,11 +91,21 @@ Building::~Building(){
     wolf::BufferManager::DestroyBuffer(m_pIBR);
 }
 void Building::setCamera(Camera* camera){
+   if(camera != nullptr){
     m_camera = camera;
+   }else{
+    printf("Camera does not exist on building!\n");
+   }
 }
 void Building::setShader(wolf::Program* m_program, wolf::Program* roofShader){
-    m_pProgram = m_program;
-    m_roofShader = roofShader;
+
+    if(m_program != 0 || roofShader != 0){
+        m_pProgram = m_program;
+        m_roofShader = roofShader;
+    }else{
+        printf("Shader's do not exist on building!\n");
+    }
+    
 }
 void Building::setColor(glm::vec3 color){
     m_color = color;
@@ -110,7 +119,10 @@ void Building::setScale(glm::vec3 scale){
     m_scale = scale;
     mWorld = glm::scale(mWorld, scale); // Apply scale
 }
-void Building::init(){
+void Building::init(wolf::Program* shader, wolf::Program* shaderRoof, Camera* camera){
+
+    setShader(shader, shaderRoof);
+    setCamera(camera);
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
     //Generate vertices
@@ -125,8 +137,9 @@ void Building::init(){
     // Set up the vertex declaration
     m_pDecl = new wolf::VertexDeclaration();
     m_pDecl->Begin();
-    m_pDecl->AppendAttribute(wolf::AT_Position, 3, wolf::CT_Float);
-    m_pDecl->AppendAttribute(wolf::AT_TexCoord1, 2, wolf::CT_Float);
+    m_pDecl->AppendAttribute(wolf::AT_Position, 3, wolf::CT_Float); //Pos attr
+    m_pDecl->AppendAttribute(wolf::AT_TexCoord1, 2, wolf::CT_Float);//Texture attr
+    m_pDecl->AppendAttribute(wolf::AT_Normal, 3, wolf::CT_Float);   //Normals attr
     m_pDecl->SetVertexBuffer(m_pVB);
     m_pDecl->End();
 
@@ -145,25 +158,33 @@ void Building::init(){
 }
 void Building::render()
 { 
+    
     glm::mat4 view = m_camera->getViewMatrix();
-    glm::mat4 proj = m_camera->getProjMatrix(800, 800);
+    glm::mat4 proj = m_camera->getProjMatrix();
 
     glm::mat4 mvp = proj * view * mWorld;
 
     // Use shader program.
-	m_pProgram->Bind();
+    m_pProgram->Bind();
     
-	// Bind Uniforms 
+    // Bind Uniforms 
     m_pProgram->SetUniform("mvp", mvp);
+    m_pProgram->SetUniform("worldIT", glm::transpose(glm::inverse(mWorld)));
 
+    //texture
     m_pProgram->SetUniform("uScale", m_scale.x);   //Supplying the width
     m_pProgram->SetUniform("vScale", m_scale.y);   //supplying the height
+
+    //lighting
+    m_pProgram->SetUniform("u_lightDir", buildingSun->getLightDirection());
+    m_pProgram->SetUniform("u_lightColor", buildingSun->getLightColor());
+    m_pProgram->SetUniform("u_ambientLight", buildingSun->getAmbientLight());
 
     m_texture->Bind(0);                     //Supply the texture and bind it
     m_pProgram->SetUniform("tex", 0);
 
-	// Set up source data
-	m_pDecl->Bind();
+    // Set up source data
+    m_pDecl->Bind();
     m_pIB->Bind();
 
     // Draw!
@@ -173,9 +194,16 @@ void Building::render()
 
     // Bind Uniforms 
     m_roofShader->SetUniform("mvp", mvp);
+    m_roofShader->SetUniform("worldIT", glm::transpose(glm::inverse(mWorld)));
 
+    //texture
     m_roofShader->SetUniform("uScale", m_scale.z);   //Supplying the width
     m_roofShader->SetUniform("vScale", m_scale.x);   //supplying the length
+
+    //lighting
+    m_roofShader->SetUniform("u_lightDir", buildingSun->getLightDirection());
+    m_roofShader->SetUniform("u_lightColor", buildingSun->getLightColor());
+    m_roofShader->SetUniform("u_ambientLight", buildingSun->getAmbientLight());
 
     m_rooftexture->Bind(0);
     m_roofShader->SetUniform("tex", 0);
@@ -184,7 +212,6 @@ void Building::render()
     m_pIBR->Bind();
 
     glDrawElements(GL_TRIANGLES, sizeof(roofIndices) / sizeof(roofIndices[0]), GL_UNSIGNED_SHORT, nullptr);
-
 }
 void Building::generateVertices(){
     vertices.clear();
@@ -198,9 +225,10 @@ glm::vec3 Building::getSize() const{
 glm::vec3 Building::getPosition() const{
     return m_position;
 }
-
-
-
-
-
-
+void Building::setSun(Sun* sun){
+    if(sun != nullptr){
+        buildingSun = sun;
+    }else{
+        printf("The sun doesn't exist!\n");
+    }
+}

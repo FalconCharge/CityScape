@@ -11,12 +11,11 @@ public:
     void update(float dt);
     void init();
     void invertCamera();
+    void setScreenSize(glm::vec2 screenSize);
     
     glm::mat4 getViewMatrix();
-    glm::mat4 getProjMatrix(int width, int height);
+    glm::mat4 getProjMatrix();
     glm::vec3 getViewPosition();
-
-
 
 private:
     // Private variables for camera properties
@@ -32,6 +31,10 @@ private:
     float m_near = 0.1f;   // Near clipping plane
     float m_far = 1000.0f; // Far clipping plane
     bool m_inverted = false;
+
+
+    int m_screenWidth;
+    int m_screenHeight;
 
     wolf::App* m_pApp = nullptr;  // Pointer to the application (wolf::App)
     

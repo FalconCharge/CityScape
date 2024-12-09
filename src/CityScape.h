@@ -7,6 +7,7 @@
 #include "plane.h"
 #include "grid.h"
 #include "road.h"
+#include "sun.h"
 #include "../samplefw/Grid3D.h"
 
 
@@ -20,22 +21,28 @@ public:
     void update(float dt) override;
     void render() override;
 
-    void regenerate();
+    void regenerate();  //Regenerates a new city
     
 
 private:
     Camera* camera;
+    Sun* sun;
     Grid3D* grid3d;
-    Road* road;
-    
-    
-    wolf::Program* m_plane = 0;
-    wolf::Program* m_building = 0;
-    wolf::Program* m_buildingRoof = 0;
-    wolf::Program* m_default = 0;
-
-    std::vector<Grid*> grids;
-
     Plane* plane1;
+    Building* building1;
+    Road* road1;
+    
+    wolf::Program* m_plane = 0;         //Shader for the plane (ground)
+    wolf::Program* m_building = 0;      //Shader for the walls of the building
+    wolf::Program* m_buildingRoof = 0;  //Shader for the roof of the building
+    wolf::Program* m_road = 0;
+    wolf::Program* m_default = 0;       //A default shader 
+
+
+    std::vector<Grid*> grids;           //Storage for all the grids
+    std::vector<Road*> roads;           //storage for the roads
+    std::vector<Plane*> planes;          //storage for the planes
+
     void createGrid();
+
 };

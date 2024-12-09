@@ -46,7 +46,7 @@ void Grid::generateGrid() {
             //Could be turned into a single line
             // Add the building to the grid 
             Building* building = new Building();
-            building->init();
+            building->init(shaderWalls, shaderRoof, camera);
             building->setPosition(position);
             building->setScale(size);
             m_buildings.push_back(building);
@@ -84,4 +84,8 @@ glm::vec3 Grid::getGridSize() const {
 std::vector<Building*> Grid::getBuildings(){
     return m_buildings;
 }
-
+void Grid::setSun(Sun* sun){
+    for(auto& building : m_buildings){
+        building->setSun(sun);
+    }
+}
