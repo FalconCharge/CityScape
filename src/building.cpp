@@ -27,8 +27,8 @@ const VertexBuilding cubeVertices[] = {
 
     // Top face (normal: (0.0f, 1.0f, 0.0f))
     { 0.0f, 1.0f, 0.0f,  0.0f, 0.0f,  1.0f, 1.0f, 1.0f }, // Bottom-left
-    { 0.0f, 1.0f, 1.0f,  1.0f, 0.0f,  0.707f, 0.707f, 0.0f }, // Bottom-right
-    { 1.0f, 1.0f, 1.0f,  1.0f, 1.0f,  0.707f, 0.707f, 0.0f }, // Top-right
+    { 0.0f, 1.0f, 1.0f,  1.0f, 0.0f,  0.7f, 0.7f, 0.0f }, // Bottom-right
+    { 1.0f, 1.0f, 1.0f,  1.0f, 1.0f,  0.7f, 0.7f, 0.0f }, // Top-right
     { 1.0f, 1.0f, 0.0f,  0.0f, 1.0f,  1.0f, 0.0f, 0.0f }, // Top-left
 
     // Bottom face (normal: (0.0f, -1.0f, 0.0f))

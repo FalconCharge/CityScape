@@ -36,18 +36,20 @@ void Sun::setAmbientLight(const glm::vec3& ambient) {
 void Sun::update(float dt) {
     elapsedTime += dt;
 
-    // Calculate the angle of rotation based on time
-    float angleX = elapsedTime * 0.1f;  // Rotation speed on the X-axis
-    float angleZ = elapsedTime * 0.1f;  // Rotation speed on the Z-axis
+    // Calculate the angle for horizontal movement (east to west, around the Y-axis)
+    float angleZ = elapsedTime * 0.1f;  // Horizontal movement speed (east-west)
 
-    // Update the light direction based on the sun's position
-    lightDirection.x = radius * cos(angleX);
-    lightDirection.y = radius * sin(angleX);  // Y-axis controls the altitude
-    lightDirection.z = radius * cos(angleZ);  // Z-axis controls the horizontal movement
+    // Calculate the sun's position (altitude is fixed or slightly varying)
+    float altitude = glm::radians(45.0f);  // 45 degrees altitude, can be adjusted
 
-    // Normalize the light direction
+    // Update the light direction based on the angleZ for horizontal movement and fixed altitude
+    lightDirection.x = radius * cos(altitude) * cos(angleZ);  // X-direction
+    lightDirection.y = radius * sin(altitude);  // Y-direction (altitude stays constant)
+    lightDirection.z = radius * cos(altitude) * sin(angleZ);  // Z-direction (horizontal movement)
+
+    // Normalize the light direction to ensure it's a unit vector
     lightDirection = glm::normalize(lightDirection);
 
-    // Optional: Adjust ambient light intensity based on time of day
-    ambientLight = glm::vec3(0.2f) + glm::vec3(0.3f) * glm::clamp(sin(angleX), 0.0f, 1.0f);
+    // Optionally adjust ambient light intensity based on time of day (can be tied to angleZ or elapsed time)
+    ambientLight = glm::vec3(0.2f) + glm::vec3(0.3f) * glm::clamp(sin(angleZ), 0.0f, 1.0f);
 }
