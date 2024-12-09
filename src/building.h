@@ -7,8 +7,9 @@
 
 struct VertexBuilding
 {
-	GLfloat x,y,z;
-    GLfloat u,v;
+	GLfloat x,y,z;       //Pos
+    GLfloat u,v;         //Tex coords
+    GLfloat nx, ny, nz;  // Normal vector
 };
 
 class Building {

@@ -44,7 +44,7 @@ void Plane::init(wolf::Program* shader, Camera* camera) {
     m_texture->SetWrapMode(wolf::Texture::WM_Repeat, wolf::Texture::WM_Repeat);
 
 
-    printf("Successfully initialized Plane\n");
+    //printf("Successfully initialized Plane\n");
 }
 void Plane::setCamera(Camera* camera){
     if(camera != nullptr){

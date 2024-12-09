@@ -1,42 +1,41 @@
 #include "building.h"
-
-// Define the vertices for a cube with UV cords
+// Define the vertices for a cube with UV coordinates and normals
 const VertexBuilding cubeVertices[] = {
-    // Front face
-    { 0.0f, 0.0f, 1.0f,  0.0f, 0.0f }, // Bottom-left
-    { 1.0f, 0.0f, 1.0f,  1.0f, 0.0f }, // Bottom-right
-    { 1.0f, 1.0f, 1.0f,  1.0f, 1.0f }, // Top-right
-    { 0.0f, 1.0f, 1.0f,  0.0f, 1.0f }, // Top-left
+    // Front face (normal: (0.0f, 0.0f, 1.0f))
+    { 0.0f, 0.0f, 1.0f,  0.0f, 0.0f,  0.0f, 0.0f, 1.0f }, // Bottom-left
+    { 1.0f, 0.0f, 1.0f,  1.0f, 0.0f,  0.0f, 0.0f, 1.0f }, // Bottom-right
+    { 1.0f, 1.0f, 1.0f,  1.0f, 1.0f,  0.0f, 0.0f, 1.0f }, // Top-right
+    { 0.0f, 1.0f, 1.0f,  0.0f, 1.0f,  0.0f, 0.0f, 1.0f }, // Top-left
 
-    // Back face
-    { 0.0f, 0.0f, 0.0f,  0.0f, 0.0f }, // Bottom-left
-    { 1.0f, 0.0f, 0.0f,  1.0f, 0.0f }, // Bottom-right
-    { 1.0f, 1.0f, 0.0f,  1.0f, 1.0f }, // Top-right
-    { 0.0f, 1.0f, 0.0f,  0.0f, 1.0f }, // Top-left
+    // Back face (normal: (0.0f, 0.0f, -1.0f))
+    { 0.0f, 0.0f, 0.0f,  0.0f, 0.0f,  0.0f, 0.0f, -1.0f }, // Bottom-left
+    { 1.0f, 0.0f, 0.0f,  1.0f, 0.0f,  0.0f, 0.0f, -1.0f }, // Bottom-right
+    { 1.0f, 1.0f, 0.0f,  1.0f, 1.0f,  0.0f, 0.0f, -1.0f }, // Top-right
+    { 0.0f, 1.0f, 0.0f,  0.0f, 1.0f,  0.0f, 0.0f, -1.0f }, // Top-left
 
-    // Left face
-    { 0.0f, 0.0f, 0.0f,  0.0f, 0.0f }, // Bottom-left
-    { 0.0f, 0.0f, 1.0f,  1.0f, 0.0f }, // Bottom-right
-    { 0.0f, 1.0f, 1.0f,  1.0f, 1.0f }, // Top-right
-    { 0.0f, 1.0f, 0.0f,  0.0f, 1.0f }, // Top-left
+    // Left face (normal: (-1.0f, 0.0f, 0.0f))
+    { 0.0f, 0.0f, 0.0f,  0.0f, 0.0f,  -1.0f, 0.0f, 0.0f }, // Bottom-left
+    { 0.0f, 0.0f, 1.0f,  1.0f, 0.0f,  -1.0f, 0.0f, 0.0f }, // Bottom-right
+    { 0.0f, 1.0f, 1.0f,  1.0f, 1.0f,  -1.0f, 0.0f, 0.0f }, // Top-right
+    { 0.0f, 1.0f, 0.0f,  0.0f, 1.0f,  -1.0f, 0.0f, 0.0f }, // Top-left
 
-    // Right face
-    { 1.0f, 0.0f, 0.0f,  0.0f, 0.0f }, // Bottom-left
-    { 1.0f, 0.0f, 1.0f,  1.0f, 0.0f }, // Bottom-right
-    { 1.0f, 1.0f, 1.0f,  1.0f, 1.0f }, // Top-right
-    { 1.0f, 1.0f, 0.0f,  0.0f, 1.0f }, // Top-left
+    // Right face (normal: (1.0f, 0.0f, 0.0f))
+    { 1.0f, 0.0f, 0.0f,  0.0f, 0.0f,  1.0f, 0.0f, 0.0f }, // Bottom-left
+    { 1.0f, 0.0f, 1.0f,  1.0f, 0.0f,  1.0f, 0.0f, 0.0f }, // Bottom-right
+    { 1.0f, 1.0f, 1.0f,  1.0f, 1.0f,  1.0f, 0.0f, 0.0f }, // Top-right
+    { 1.0f, 1.0f, 0.0f,  0.0f, 1.0f,  1.0f, 0.0f, 0.0f }, // Top-left
 
-    // Top face
-    { 0.0f, 1.0f, 0.0f,  0.0f, 0.0f }, // Bottom-left
-    { 0.0f, 1.0f, 1.0f,  1.0f, 0.0f }, // Bottom-right
-    { 1.0f, 1.0f, 1.0f,  1.0f, 1.0f }, // Top-right
-    { 1.0f, 1.0f, 0.0f,  0.0f, 1.0f }, // Top-left
+    // Top face (normal: (0.0f, 1.0f, 0.0f))
+    { 0.0f, 1.0f, 0.0f,  0.0f, 0.0f,  0.0f, 1.0f, 0.0f }, // Bottom-left
+    { 0.0f, 1.0f, 1.0f,  1.0f, 0.0f,  0.0f, 1.0f, 0.0f }, // Bottom-right
+    { 1.0f, 1.0f, 1.0f,  1.0f, 1.0f,  0.0f, 1.0f, 0.0f }, // Top-right
+    { 1.0f, 1.0f, 0.0f,  0.0f, 1.0f,  0.0f, 1.0f, 0.0f }, // Top-left
 
-    // Bottom face
-    { 0.0f, 0.0f, 0.0f,  0.0f, 0.0f }, // Bottom-left
-    { 0.0f, 0.0f, 1.0f,  1.0f, 0.0f }, // Bottom-right
-    { 1.0f, 0.0f, 1.0f,  1.0f, 1.0f }, // Top-right
-    { 1.0f, 0.0f, 0.0f,  0.0f, 1.0f }  // Top-left
+    // Bottom face (normal: (0.0f, -1.0f, 0.0f))
+    { 0.0f, 0.0f, 0.0f,  0.0f, 0.0f,  0.0f, -1.0f, 0.0f }, // Bottom-left
+    { 0.0f, 0.0f, 1.0f,  1.0f, 0.0f,  0.0f, -1.0f, 0.0f }, // Bottom-right
+    { 1.0f, 0.0f, 1.0f,  1.0f, 1.0f,  0.0f, -1.0f, 0.0f }, // Top-right
+    { 1.0f, 0.0f, 0.0f,  0.0f, 1.0f,  0.0f, -1.0f, 0.0f }  // Top-left
 };
 const unsigned short cubeIndices[] = {
     // Front face
@@ -138,8 +137,9 @@ void Building::init(wolf::Program* shader, wolf::Program* shaderRoof, Camera* ca
     // Set up the vertex declaration
     m_pDecl = new wolf::VertexDeclaration();
     m_pDecl->Begin();
-    m_pDecl->AppendAttribute(wolf::AT_Position, 3, wolf::CT_Float);
-    m_pDecl->AppendAttribute(wolf::AT_TexCoord1, 2, wolf::CT_Float);
+    m_pDecl->AppendAttribute(wolf::AT_Position, 3, wolf::CT_Float); //Pos attr
+    m_pDecl->AppendAttribute(wolf::AT_TexCoord1, 2, wolf::CT_Float);//Texture attr
+    m_pDecl->AppendAttribute(wolf::AT_Normal, 3, wolf::CT_Float);   //Normals attr
     m_pDecl->SetVertexBuffer(m_pVB);
     m_pDecl->End();
 
