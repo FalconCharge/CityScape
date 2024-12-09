@@ -84,4 +84,8 @@ glm::vec3 Grid::getGridSize() const {
 std::vector<Building*> Grid::getBuildings(){
     return m_buildings;
 }
-
+void Grid::setSun(Sun* sun){
+    for(auto& building : m_buildings){
+        building->setSun(sun);
+    }
+}

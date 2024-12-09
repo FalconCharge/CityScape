@@ -26,10 +26,10 @@ const VertexBuilding cubeVertices[] = {
     { 1.0f, 1.0f, 0.0f,  0.0f, 1.0f,  1.0f, 0.0f, 0.0f }, // Top-left
 
     // Top face (normal: (0.0f, 1.0f, 0.0f))
-    { 0.0f, 1.0f, 0.0f,  0.0f, 0.0f,  0.0f, 1.0f, 0.0f }, // Bottom-left
-    { 0.0f, 1.0f, 1.0f,  1.0f, 0.0f,  0.0f, 1.0f, 0.0f }, // Bottom-right
-    { 1.0f, 1.0f, 1.0f,  1.0f, 1.0f,  0.0f, 1.0f, 0.0f }, // Top-right
-    { 1.0f, 1.0f, 0.0f,  0.0f, 1.0f,  0.0f, 1.0f, 0.0f }, // Top-left
+    { 0.0f, 1.0f, 0.0f,  0.0f, 0.0f,  1.0f, 1.0f, 1.0f }, // Bottom-left
+    { 0.0f, 1.0f, 1.0f,  1.0f, 0.0f,  0.707f, 0.707f, 0.0f }, // Bottom-right
+    { 1.0f, 1.0f, 1.0f,  1.0f, 1.0f,  0.707f, 0.707f, 0.0f }, // Top-right
+    { 1.0f, 1.0f, 0.0f,  0.0f, 1.0f,  1.0f, 0.0f, 0.0f }, // Top-left
 
     // Bottom face (normal: (0.0f, -1.0f, 0.0f))
     { 0.0f, 0.0f, 0.0f,  0.0f, 0.0f,  0.0f, -1.0f, 0.0f }, // Bottom-left
@@ -169,9 +169,16 @@ void Building::render()
     
     // Bind Uniforms 
     m_pProgram->SetUniform("mvp", mvp);
+    m_pProgram->SetUniform("worldIT", glm::transpose(glm::inverse(mWorld)));
 
+    //texture
     m_pProgram->SetUniform("uScale", m_scale.x);   //Supplying the width
     m_pProgram->SetUniform("vScale", m_scale.y);   //supplying the height
+
+    //lighting
+    m_pProgram->SetUniform("u_lightDir", buildingSun->getLightDirection());
+    m_pProgram->SetUniform("u_lightColor", buildingSun->getLightColor());
+    m_pProgram->SetUniform("u_ambientLight", buildingSun->getAmbientLight());
 
     m_texture->Bind(0);                     //Supply the texture and bind it
     m_pProgram->SetUniform("tex", 0);
@@ -187,9 +194,16 @@ void Building::render()
 
     // Bind Uniforms 
     m_roofShader->SetUniform("mvp", mvp);
+    m_roofShader->SetUniform("worldIT", glm::transpose(glm::inverse(mWorld)));
 
+    //texture
     m_roofShader->SetUniform("uScale", m_scale.z);   //Supplying the width
     m_roofShader->SetUniform("vScale", m_scale.x);   //supplying the length
+
+    //lighting
+    m_roofShader->SetUniform("u_lightDir", buildingSun->getLightDirection());
+    m_roofShader->SetUniform("u_lightColor", buildingSun->getLightColor());
+    m_roofShader->SetUniform("u_ambientLight", buildingSun->getAmbientLight());
 
     m_rooftexture->Bind(0);
     m_roofShader->SetUniform("tex", 0);
@@ -198,9 +212,6 @@ void Building::render()
     m_pIBR->Bind();
 
     glDrawElements(GL_TRIANGLES, sizeof(roofIndices) / sizeof(roofIndices[0]), GL_UNSIGNED_SHORT, nullptr);
-
-
-
 }
 void Building::generateVertices(){
     vertices.clear();
@@ -213,4 +224,11 @@ glm::vec3 Building::getSize() const{
 }
 glm::vec3 Building::getPosition() const{
     return m_position;
+}
+void Building::setSun(Sun* sun){
+    if(sun != nullptr){
+        buildingSun = sun;
+    }else{
+        printf("The sun doesn't exist!\n");
+    }
 }

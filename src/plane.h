@@ -3,11 +3,13 @@
 #include "../wolf/wolf.h"
 #include "../wolf/stb_image.h"
 #include "camera.h"
+#include "sun.h"
 
 struct VertexPlane
 {
 	GLfloat x,y,z;
     GLfloat u, v;
+    GLfloat nX, nY, nZ;
 };
 
 class Plane{
@@ -23,12 +25,14 @@ public:
     void setScale(glm::vec3);
     void setPosition(glm::vec3);
     void setShader(wolf::Program* shader);
+    void setSun(Sun* sun);
 private:
     wolf::VertexBuffer* m_VBplane = 0;
     wolf::VertexDeclaration* m_pDecl = 0;
     
     wolf::Program* m_pProgram = 0;
     Camera* m_camera = nullptr;
+    Sun* m_sun = nullptr;
     wolf::Texture* m_texture;
 
     glm::vec3 m_Scale;

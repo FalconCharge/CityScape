@@ -2,14 +2,14 @@
 
 
 const VertexPlane planeVertices[] = {
-    // Positions               // Texture Coordinates
-    {  0.0f,  0.0f,  0.0f,     0.0f, 0.0f },  // Bottom-left
-    {  0.0f,  0.0f,  1.0f,     1.0f, 0.0f },  // Bottom-right
-    {  1.0f,  0.0f,  1.0f,     1.0f, 1.0f },  // Top-right
+    // Positions               // Text cords//Normals direction
+    {  0.0f,  0.0f,  0.0f,     0.0f, 0.0f,  0.0f, 0.0f, 1.0f },  // Bottom-left
+    {  0.0f,  0.0f,  1.0f,     1.0f, 0.0f,  0.0f, 0.0f, 1.0f },  // Bottom-right
+    {  1.0f,  0.0f,  1.0f,     1.0f, 1.0f,  0.0f, 0.0f, 1.0f },  // Top-right
 
-    {  0.0f,  0.0f,  0.0f,     0.0f, 0.0f },  // Bottom-left
-    {  1.0f,  0.0f,  1.0f,     1.0f, 1.0f },  // Top-right
-    {  1.0f,  0.0f,  0.0f,     0.0f, 1.0f },  // Top-left
+    {  0.0f,  0.0f,  0.0f,     0.0f, 0.0f,  0.0f, 0.0f, 1.0f },  // Bottom-left
+    {  1.0f,  0.0f,  1.0f,     1.0f, 1.0f,  0.0f, 0.0f, 1.0f },  // Top-right
+    {  1.0f,  0.0f,  0.0f,     0.0f, 1.0f,  0.0f, 0.0f, 1.0f },  // Top-left
 };
 Plane::Plane(){
     
@@ -36,6 +36,7 @@ void Plane::init(wolf::Program* shader, Camera* camera) {
     m_pDecl->Begin();
     m_pDecl->AppendAttribute(wolf::AT_Position, 3, wolf::CT_Float);
     m_pDecl->AppendAttribute(wolf::AT_TexCoord1, 2, wolf::CT_Float);
+    m_pDecl->AppendAttribute(wolf::AT_Normal, 3, wolf::CT_Float);
     m_pDecl->SetVertexBuffer(m_VBplane);
     m_pDecl->End();    
 
@@ -76,9 +77,15 @@ void Plane::render()
     
 	// Bind Uniforms 
     m_pProgram->SetUniform("mvp", mvp);
+    m_pProgram->SetUniform("worldIT", glm::transpose(glm::inverse(m_World)));
 
     m_pProgram->SetUniform("uScale", m_Scale.z);   //Supplying the width
     m_pProgram->SetUniform("vScale", m_Scale.x);   //supplying the height
+
+    //lighting
+    m_pProgram->SetUniform("u_lightDir", m_sun->getLightDirection());
+    m_pProgram->SetUniform("u_lightColor", m_sun->getLightColor());
+    m_pProgram->SetUniform("u_ambientLight", m_sun->getAmbientLight());
 
     m_texture->Bind(1);
     m_pProgram->SetUniform("tex", 1);
@@ -98,6 +105,13 @@ void Plane::generateVertices() {
 void Plane::setScale(glm::vec3 scale){
     m_Scale = scale;
     m_World = glm::scale(m_World, m_Scale); // Apply scale
+}
+void Plane::setSun(Sun* sun){
+    if(sun != nullptr){
+        m_sun = sun;
+    }else{
+        printf("Sun doesn't exist plane!\n");
+    }
 }
 
 

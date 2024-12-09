@@ -2,10 +2,10 @@
 
 const VertexRoad roadVertices[] = {
     // Top face
-    { 0.0f, 0.0f, 0.0f,  0.0f, 0.0f }, // Bottom-left
-    { 0.0f, 0.0f, 1.0f,  1.0f, 0.0f }, // Bottom-right
-    { 1.0f, 0.0f, 1.0f,  1.0f, 1.0f }, // Top-right
-    { 1.0f, 0.0f, 0.0f,  0.0f, 1.0f } // Top-left
+    { 0.0f, 0.0f, 0.0f,  0.0f, 0.0f,    0.0f, 0.0f, 1.0f}, // Bottom-left
+    { 0.0f, 0.0f, 1.0f,  1.0f, 0.0f,    0.0f, 0.0f, 1.0f}, // Bottom-right
+    { 1.0f, 0.0f, 1.0f,  1.0f, 1.0f,    0.0f, 0.0f, 1.0f}, // Top-right
+    { 1.0f, 0.0f, 0.0f,  0.0f, 1.0f,    0.0f, 0.0f, 1.0f} // Top-left
 };
 const unsigned short roadIndices[] = {
     // Top face
@@ -56,6 +56,7 @@ void Road::setupBuffers(){
     m_pDecl->Begin();
     m_pDecl->AppendAttribute(wolf::AT_Position, 3, wolf::CT_Float);
     m_pDecl->AppendAttribute(wolf::AT_TexCoord1, 2, wolf::CT_Float);
+    m_pDecl->AppendAttribute(wolf::AT_Normal, 3, wolf::CT_Float);
     m_pDecl->SetVertexBuffer(m_pVB);
     m_pDecl->End();
 }
@@ -79,7 +80,13 @@ void Road::setLengthX(float lengthX) {
 void Road::setLengthZ(float lengthZ) {
     m_lengthZ = lengthZ;
 }
-
+void Road::setSun(Sun* sun){
+    if(sun != nullptr){
+        m_sun = sun;
+    }else{
+        printf("The sun doesn't exist on the road!\n");
+    }
+}
 void Road::setStartPosition(const glm::vec3& startPosition) {
     m_startPosition = startPosition;
 }
@@ -108,9 +115,15 @@ void Road::render(){
     m_program->Bind();
 
     m_program->SetUniform("mvp", mvp);
+    m_program->SetUniform("worldIT", glm::transpose(glm::inverse(modelMatrix)));
 
     m_program->SetUniform("uScale", m_lengthZ);   //Supplying the width
     m_program->SetUniform("vScale", m_lengthX);   //supplying the height
+
+    //lighting
+    m_program->SetUniform("u_lightDir", m_sun->getLightDirection());
+    m_program->SetUniform("u_lightColor", m_sun->getLightColor());
+    m_program->SetUniform("u_ambientLight", m_sun->getAmbientLight());
 
     m_texture->Bind(0);
     m_program->SetUniform("tex", 0);

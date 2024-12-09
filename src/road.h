@@ -3,12 +3,14 @@
 #include "../wolf/wolf.h"
 #include "../wolf/stb_image.h"
 #include "camera.h"
+#include "sun.h"
 #include <iostream>
 
 struct VertexRoad
 {
 	GLfloat x,y,z;
     GLfloat u,v;
+    GLfloat nX, nY, Nz;
 };
 
 class Road {
@@ -30,6 +32,7 @@ public:
     void setStartPosition(const glm::vec3& startPosition);
     void setCamera(Camera* m_camera);
     void setShader(wolf::Program* shader);
+    void setSun(Sun* sun);
 
     // Render method to draw the road
     void render();
@@ -39,7 +42,7 @@ private:
     void setupBuffers();
 
 
-
+    Sun* m_sun;
     Camera* m_camera;
     wolf::Program* m_program = 0;
     wolf::VertexBuffer* m_pVB = 0;

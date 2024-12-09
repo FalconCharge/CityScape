@@ -4,6 +4,7 @@
 #include "../wolf/stb_image.h"
 #include "camera.h"
 #include "building.h"
+#include "sun.h"
 
 
 class Grid {
@@ -16,6 +17,7 @@ public:
 
     void setCamera(Camera* camera);  // Set camera for the buildings
     void setShader(wolf::Program* shader, wolf::Program* roofShader);  // Set shader for the buildings
+    void setSun(Sun* sun);
     void printGrid();
     glm::vec3 getGridSize() const;
     std::vector<Building*> getBuildings();

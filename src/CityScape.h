@@ -7,6 +7,7 @@
 #include "plane.h"
 #include "grid.h"
 #include "road.h"
+#include "sun.h"
 #include "../samplefw/Grid3D.h"
 
 
@@ -25,6 +26,7 @@ public:
 
 private:
     Camera* camera;
+    Sun* sun;
     Grid3D* grid3d;
     Plane* plane1;
     Building* building1;
