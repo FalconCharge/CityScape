@@ -81,7 +81,6 @@ void CityScape::regenerate(){
     createGrid();
 }
 void CityScape::createGrid() {
-    grids.clear();
     roads.clear();
     planes.clear();
 
