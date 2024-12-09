@@ -39,17 +39,17 @@ void Sun::update(float dt) {
     // Calculate the angle for horizontal movement (east to west, around the Y-axis)
     float angleZ = elapsedTime * 0.1f;  // Horizontal movement speed (east-west)
 
-    // Calculate the sun's position (altitude is fixed or slightly varying)
-    float altitude = glm::radians(45.0f);  // 45 degrees altitude, can be adjusted
+    // Calculate the sun's position
+    float altitude = glm::radians(45.0f);  // 45 degrees altitude
 
     // Update the light direction based on the angleZ for horizontal movement and fixed altitude
     lightDirection.x = radius * cos(altitude) * cos(angleZ);  // X-direction
-    lightDirection.y = radius * sin(altitude);  // Y-direction (altitude stays constant)
-    lightDirection.z = radius * cos(altitude) * sin(angleZ);  // Z-direction (horizontal movement)
+    lightDirection.y = radius * sin(altitude);  // Y-direction
+    lightDirection.z = radius * cos(altitude) * sin(angleZ);  // Z-direction
 
     // Normalize the light direction to ensure it's a unit vector
     lightDirection = glm::normalize(lightDirection);
 
-    // Optionally adjust ambient light intensity based on time of day (can be tied to angleZ or elapsed time)
+    // Optionally adjust ambient light intensity based on time of day
     ambientLight = glm::vec3(0.2f) + glm::vec3(0.3f) * glm::clamp(sin(angleZ), 0.0f, 1.0f);
 }

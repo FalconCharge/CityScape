@@ -43,9 +43,6 @@ void Plane::init(wolf::Program* shader, Camera* camera) {
     m_texture = wolf::TextureManager::CreateTexture("data/textures/grasstop.png");
     m_texture->SetFilterMode(wolf::Texture::FM_Linear, wolf::Texture::FM_LinearMipmap);
     m_texture->SetWrapMode(wolf::Texture::WM_Repeat, wolf::Texture::WM_Repeat);
-
-
-    //printf("Successfully initialized Plane\n");
 }
 void Plane::setCamera(Camera* camera){
     if(camera != nullptr){

@@ -17,8 +17,11 @@ CityScape::CityScape() : wolf::App("CityScape"){
 CityScape::~CityScape() {
     printf("Destroying the cityScape!\n");
     wolf::ProgramManager::DestroyProgram(m_plane);
+    wolf::ProgramManager::DestroyProgram(m_building);
+    wolf::ProgramManager::DestroyProgram(m_buildingRoof);
+    wolf::ProgramManager::DestroyProgram(m_road);
+    wolf::ProgramManager::DestroyProgram(m_default);
     delete camera;
-    delete plane1;
 }
 
 void CityScape::update(float dt) {
@@ -29,7 +32,7 @@ void CityScape::update(float dt) {
         regenerate();       //If "R" is pressed regenerate the city
     }
     if(sun){
-        sun->update(dt);
+        sun->update(dt);    //Sun movement
     }
     
 }
@@ -39,18 +42,10 @@ void CityScape::init(){
     sun = new Sun();
 
     //Get the shaders ready
-    m_plane = wolf::ProgramManager::CreateProgram("data/plane.vsh", "data/building.fsh"); //Shader for the shader Nov.12
-    m_building = wolf::ProgramManager::CreateProgram("data/building.vsh", "data/building.fsh"); //Shader for the shader Nov.12
-    m_buildingRoof = wolf::ProgramManager::CreateProgram("data/buildingRoof.vsh", "data/building.fsh"); //Shader for the shader Nov.12
-    m_road = wolf::ProgramManager::CreateProgram("data/road.vsh", "data/building.fsh");
-
-    m_default = wolf::ProgramManager::CreateProgram("data/default.vsh", "data/default.fsh");
-
-    //I think I can delete this section
-    plane1 = new Plane();
-    plane1->init(m_plane, camera);
-    plane1->setPosition(glm::vec3(-5.0f, 0.0f, -5.0f));
-    plane1->setScale(glm::vec3(100.0f, 1.0f, 100.0f));
+    m_plane = wolf::ProgramManager::CreateProgram("data/plane.vsh", "data/default.fsh"); //Shader for the shader Nov.12
+    m_building = wolf::ProgramManager::CreateProgram("data/building.vsh", "data/default.fsh"); //Shader for the shader Nov.12
+    m_buildingRoof = wolf::ProgramManager::CreateProgram("data/buildingRoof.vsh", "data/default.fsh"); //Shader for the shader Nov.12
+    m_road = wolf::ProgramManager::CreateProgram("data/road.vsh", "data/default.fsh");
 
     regenerate();
 
@@ -124,10 +119,7 @@ void CityScape::createGrid() {
     float count = 0;
     for (auto& grid : grids) {
         grid->init();
-        grid->setCamera(camera);
-        grid->setShader(m_building, m_buildingRoof);
-        grid->setSun(sun);
-
+        grid->setCameraShaderSun(camera, m_building, m_buildingRoof, sun);
         for (auto& building : grid->getBuildings()) {
             count++;
         }

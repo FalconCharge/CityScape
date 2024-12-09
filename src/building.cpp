@@ -80,47 +80,42 @@ const unsigned short roofIndices[] = {
     16, 17, 18, // Triangle 1
     16, 18, 19, // Triangle 2
 };
-
 Building::~Building(){
     printf("Destroying The Building\n");
-    delete m_pDecl;
+    if(m_pDecl){delete m_pDecl;}
 	wolf::BufferManager::DestroyBuffer(m_pVB);
     wolf::TextureManager::DestroyTexture(m_texture);
     wolf::TextureManager::DestroyTexture(m_rooftexture);
     wolf::BufferManager::DestroyBuffer(m_pIB);
     wolf::BufferManager::DestroyBuffer(m_pIBR);
 }
-void Building::setCamera(Camera* camera){
-   if(camera != nullptr){
-    m_camera = camera;
-   }else{
-    printf("Camera does not exist on building!\n");
-   }
-}
-void Building::setShader(wolf::Program* m_program, wolf::Program* roofShader){
-
-    if(m_program != 0 || roofShader != 0){
-        m_pProgram = m_program;
-        m_roofShader = roofShader;
-    }else{
-        printf("Shader's do not exist on building!\n");
+//Setters
+void Building::setCamera(Camera* camera) {
+    if (!camera) {
+        printf("Camera does not exist on building!\n");
+        return;
     }
-    
+    m_camera = camera;
+}
+void Building::setShader(wolf::Program* m_program, wolf::Program* roofShader) {
+    if (!m_program || !roofShader) {
+        printf("Shader(s) do not exist on building!\n");
+        return;
+    }
+    m_pProgram = m_program;
+    m_roofShader = roofShader;
 }
 void Building::setColor(glm::vec3 color){
     m_color = color;
 }
-void Building::setPosition(glm::vec3 pos){
-    m_position = pos;
+void Building::setTransform(glm::vec3 position, glm::vec3 scale){
+    m_position = position;
+    m_scale = scale;
     mWorld = glm::mat4(1.0f);
     mWorld = glm::translate(mWorld, m_position); // Apply translation
-}
-void Building::setScale(glm::vec3 scale){
-    m_scale = scale;
-    mWorld = glm::scale(mWorld, scale); // Apply scale
+    mWorld = glm::scale(mWorld, m_scale); // Apply scale    
 }
 void Building::init(wolf::Program* shader, wolf::Program* shaderRoof, Camera* camera){
-
     setShader(shader, shaderRoof);
     setCamera(camera);
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
@@ -152,36 +147,34 @@ void Building::init(wolf::Program* shader, wolf::Program* shaderRoof, Camera* ca
     m_rooftexture->SetFilterMode(wolf::Texture::FM_LinearMipmap, wolf::Texture::FM_LinearMipmap);
     m_rooftexture->SetWrapMode(wolf::Texture::WM_Repeat, wolf::Texture::WM_Repeat);
 
+
     // Initialize transformation matrix
     mWorld = glm::mat4(1.0f);
-
 }
 void Building::render()
 { 
-    
     glm::mat4 view = m_camera->getViewMatrix();
     glm::mat4 proj = m_camera->getProjMatrix();
 
     glm::mat4 mvp = proj * view * mWorld;
 
+
     // Use shader program.
     m_pProgram->Bind();
-    
-    // Bind Uniforms 
-    m_pProgram->SetUniform("mvp", mvp);
-    m_pProgram->SetUniform("worldIT", glm::transpose(glm::inverse(mWorld)));
 
-    //texture
-    m_pProgram->SetUniform("uScale", m_scale.x);   //Supplying the width
+    m_pProgram->SetUniform("mvp", mvp);
+    
+    m_pProgram->SetUniform("uScale", m_scale.z);    //supplyig the width
     m_pProgram->SetUniform("vScale", m_scale.y);   //supplying the height
 
-    //lighting
-    m_pProgram->SetUniform("u_lightDir", buildingSun->getLightDirection());
-    m_pProgram->SetUniform("u_lightColor", buildingSun->getLightColor());
-    m_pProgram->SetUniform("u_ambientLight", buildingSun->getAmbientLight());
-
-    m_texture->Bind(0);                     //Supply the texture and bind it
-    m_pProgram->SetUniform("tex", 0);
+    setUniforms(m_pProgram);
+    
+    // Check if the texture is already bound
+    if (m_texture != lastTexture) {
+        m_texture->Bind(0);  // Supply the texture and bind it
+        m_pProgram->SetUniform("tex", 0);
+        lastTexture = m_texture; // Update the last bound texture
+    }
 
     // Set up source data
     m_pDecl->Bind();
@@ -194,23 +187,15 @@ void Building::render()
 
     // Bind Uniforms 
     m_roofShader->SetUniform("mvp", mvp);
-    m_roofShader->SetUniform("worldIT", glm::transpose(glm::inverse(mWorld)));
-
-    //texture
     m_roofShader->SetUniform("uScale", m_scale.z);   //Supplying the width
-    m_roofShader->SetUniform("vScale", m_scale.x);   //supplying the length
+    m_roofShader->SetUniform("vScale", m_scale.x);   //supplying the height
+    setUniforms(m_roofShader);
 
-    //lighting
-    m_roofShader->SetUniform("u_lightDir", buildingSun->getLightDirection());
-    m_roofShader->SetUniform("u_lightColor", buildingSun->getLightColor());
-    m_roofShader->SetUniform("u_ambientLight", buildingSun->getAmbientLight());
+    m_rooftexture->Bind(1);
+    m_roofShader->SetUniform("tex", 1);
+    lastTexture = m_rooftexture;
 
-    m_rooftexture->Bind(0);
-    m_roofShader->SetUniform("tex", 0);
-
-    m_pDecl->Bind();
     m_pIBR->Bind();
-
     glDrawElements(GL_TRIANGLES, sizeof(roofIndices) / sizeof(roofIndices[0]), GL_UNSIGNED_SHORT, nullptr);
 }
 void Building::generateVertices(){
@@ -231,4 +216,10 @@ void Building::setSun(Sun* sun){
     }else{
         printf("The sun doesn't exist!\n");
     }
+}
+void Building::setUniforms(wolf::Program* shader) {
+    shader->SetUniform("worldIT", glm::transpose(glm::inverse(mWorld)));
+    shader->SetUniform("u_lightDir", buildingSun->getLightDirection());
+    shader->SetUniform("u_lightColor", buildingSun->getLightColor());
+    shader->SetUniform("u_ambientLight", buildingSun->getAmbientLight());
 }

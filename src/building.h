@@ -22,14 +22,10 @@ public:
     void setCamera(Camera* camera);
     void setShader(wolf::Program* m_program, wolf::Program* roofShader);
     void setColor(glm::vec3 color);
-    void setPosition(glm::vec3 pos);
-    void setScale(glm::vec3 scale);
+    void setTransform(glm::vec3 pos, glm::vec3 scale);
     void setSun(Sun* sun);
     glm::vec3 getSize() const;
     glm::vec3 getPosition() const;
-
-    static const std::vector<VertexBuilding>& getVertices(); // Return static vertices
-    static const std::vector<unsigned short>& getIndices();  // Return static indices
     
 private:
     wolf::VertexBuffer* m_pVB = 0;
@@ -40,6 +36,7 @@ private:
     wolf::Program* m_pProgram = 0;
     wolf::Program* m_roofShader = 0;
     wolf::Texture* m_texture;
+    wolf::Texture* lastTexture = nullptr;
     wolf::Texture* m_rooftexture;
     Camera* m_camera = nullptr;
 
@@ -50,6 +47,8 @@ private:
     Sun* buildingSun;
     float uScale;
     float vScale;
+
+    void setUniforms(wolf::Program* shader);
 
     void generateVertices();
     void generateIndices();

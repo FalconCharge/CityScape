@@ -39,3 +39,9 @@ I have made a few small changed to wolf such as:
     W_App.h
     I added a setMousePos function
     I added a hideCursor function
+
+optimizatoins
+
+small optimizations were made.
+Started at 35FPS
+Currently got it to 40FPS

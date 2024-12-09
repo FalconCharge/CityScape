@@ -18,8 +18,6 @@ void Grid::init(){
 }
 
 void Grid::generateGrid() {
-    std::srand(std::time(0)); // Seed random number generator
-
     float currentX = m_startPos.x;
     float currentZ = m_startPos.z;
 
@@ -42,13 +40,10 @@ void Grid::generateGrid() {
 
             glm::vec3 position(currentX, 0.0f, currentZ);
 
-
-            //Could be turned into a single line
             // Add the building to the grid 
             Building* building = new Building();
             building->init(shaderWalls, shaderRoof, camera);
-            building->setPosition(position);
-            building->setScale(size);
+            building->setTransform(position, size);
             m_buildings.push_back(building);
             
             // Increment X position
@@ -65,27 +60,14 @@ void Grid::render() {
         building->render(); 
     }
 }
-void Grid::setCamera(Camera* camera) {
-    //Set the camera
-    for (auto& building : m_buildings) {
-        building->setCamera(camera); 
-    }
-}
-void Grid::setShader(wolf::Program* shader, wolf::Program* roofShader) {
-    // Set shaders
+void Grid::setCameraShaderSun(Camera* camera, wolf::Program* shader, wolf::Program* roofShader, Sun* sun){
     for (auto& building : m_buildings) {
         building->setShader(shader, roofShader); 
+        building->setSun(sun);
+        building->setCamera(camera);
     }
 }
-//Delete this function
-glm::vec3 Grid::getGridSize() const {
-    return glm::vec3(m_endPos);
-}
+
 std::vector<Building*> Grid::getBuildings(){
     return m_buildings;
-}
-void Grid::setSun(Sun* sun){
-    for(auto& building : m_buildings){
-        building->setSun(sun);
-    }
 }
