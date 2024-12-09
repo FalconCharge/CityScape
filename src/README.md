@@ -39,3 +39,7 @@ I have made a few small changed to wolf such as:
     W_App.h
     I added a setMousePos function
     I added a hideCursor function
+
+How to run
+    Open the folder in VS code
+    Build the project and run main.cpp
